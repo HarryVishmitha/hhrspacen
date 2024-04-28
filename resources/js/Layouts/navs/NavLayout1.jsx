@@ -1,8 +1,8 @@
-import { Link } from "@inertiajs/react";
+import { Link, } from "@inertiajs/react";
 
 export default function NavLayout1() {
     return(
-        <nav className="">
+        <nav className="nav">
             
         </nav>
     );

@@ -14,6 +14,11 @@ export default function home({ auth }) {
             <Head title="Home" />
             <NavLayout1/>
             this is boady
+            {auth.user ? (
+                <Link href="/login">Login</Link>
+            ) : (
+                <Link href="/dashboard">Dashboard</Link>
+            )}
         </>
     );
 }
