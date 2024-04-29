@@ -19,6 +19,7 @@ export default function home({ auth }) {
             ) : (
                 <Link href="/dashboard">Dashboard</Link>
             )}
+            hello
         </>
     );
 }
