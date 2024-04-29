@@ -1,4 +1,4 @@
-import { Link, } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 
 export default function NavLayout1() {
     return(
