@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -15,9 +16,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', 'admin'])->name('dashboard');
+Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['auth', 'verified', 'user'])->name('dashboard');
 
 Route::get('admin/dashboard', [AdminController::class, 'index'] )->middleware(['auth', 'verified', 'admin'])->name('adminDashboard');
 

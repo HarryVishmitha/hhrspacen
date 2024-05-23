@@ -8,6 +8,9 @@ class Auth extends Controller
 {
     public function index()  {
         $loggedIn = Auth::check();
+        if (Auth::user()->role === 'admin') {
+            return inertia('adminDashboard', ['loggedIn' => $loggedIn]);
+        }
         return inertia('Dashboard', ['loggedIn' => $loggedIn]);
     }
 }
