@@ -47,55 +47,52 @@ export default function UpdatePasswordForm({ className = '' }) {
             </header>
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="current_password" value="Current Password" />
-
-                    <TextInput
+                <div className="form-floating mb-3">
+                    <input
+                        type="password"
+                        className="form-control"
                         id="current_password"
                         ref={currentPasswordInput}
+                        placeholder="password123"
                         value={data.current_password}
-                        onChange={(e) => setData('current_password', e.target.value)}
-                        type="password"
-                        className="mt-1 block w-full"
                         autoComplete="current-password"
+                        onChange={(e) => setData('current_password', e.target.value)}
                     />
-
-                    <InputError message={errors.current_password} className="mt-2" />
+                    <label htmlFor="current_password">Current Password</label>
+                    {errors.current_password && <div className="text-danger">{errors.current_password}</div>}
                 </div>
 
-                <div>
-                    <InputLabel htmlFor="password" value="New Password" />
-
-                    <TextInput
+                <div className="form-floating mb-3">
+                    <input
+                        type="password"
+                        className="form-control"
                         id="password"
                         ref={passwordInput}
+                        placeholder="newpassword123"
                         value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        type="password"
-                        className="mt-1 block w-full"
                         autoComplete="new-password"
+                        onChange={(e) => setData('password', e.target.value)}
                     />
-
-                    <InputError message={errors.password} className="mt-2" />
+                    <label htmlFor="password">New Password</label>
+                    {errors.password && <div className="text-danger">{errors.password}</div>}
                 </div>
 
-                <div>
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
-                        id="password_confirmation"
-                        value={data.password_confirmation}
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                <div className="form-floating mb-3">
+                    <input
                         type="password"
-                        className="mt-1 block w-full"
+                        className="form-control"
+                        id="password_confirmation"
+                        placeholder="newpassword123"
+                        value={data.password_confirmation}
                         autoComplete="new-password"
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
                     />
-
-                    <InputError message={errors.password_confirmation} className="mt-2" />
+                    <label htmlFor="password_confirmation">Confirm Password</label>
+                    {errors.password_confirmation && <div className="text-danger">{errors.password_confirmation}</div>}
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <button className='btn btn-outline-primary' disabled={processing}>Save</button>
 
                     <Transition
                         show={recentlySuccessful}
@@ -104,7 +101,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+                        <p className="alert alert-success mt-2">Successfully password changed.</p>
                     </Transition>
                 </div>
             </form>

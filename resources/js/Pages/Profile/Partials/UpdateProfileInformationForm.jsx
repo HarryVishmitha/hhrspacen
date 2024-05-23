@@ -11,6 +11,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
+        phone_number: user.phone_number || 'N/A',
     });
 
     const submit = (e) => {
@@ -30,54 +31,39 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
-                    />
-
-                    <InputError className="mt-2" message={errors.name} />
+                <div className="form-floating mb-3">
+                    <input type="text" className="form-control"  id="name" placeholder="Jhon Due" value={data.name} autoComplete="name" isfocused={true} onChange={(e) => setData('name', e.target.value)} required/>
+                    <label htmlFor="floatingInput">Full Name</label>
+                    {errors.name && <div className="text-danger">{errors.name}</div>}
                 </div>
-
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                        autoComplete="username"
-                    />
-
-                    <InputError className="mt-2" message={errors.email} />
+                <div className="form-floating mb-3">
+                    <input type="email" className="form-control"  id="email" placeholder="name@example.com" value={data.email} autoComplete="username" isfocused={true} onChange={(e) => setData('email', e.target.value)} required/>
+                    <label htmlFor="floatingInput">Email address</label>
+                    {errors.email && <div className="text-danger">{errors.email}</div>}
+                </div>
+                <div className="form-floating mb-3">
+                    <input type="number" className="form-control"  id="phone_number" placeholder="+94112000000" value={data.phone_number} autoComplete="phone_number" isfocused={true} onChange={(e) => setData('phone_number', e.target.value)}/>
+                    <label htmlFor="floatingInput">Whatsapp Number</label>
+                    {data.phone_number == 'N/A' && <div className='text-danger'>Add Your Whatsapp number. If you don't use Whatsapp, Please add your phone number and we will contact using your email address in future. So Stay tuned with your email address if you don't have Whatsapp.</div>}
+                    {errors.phone_number && <div className="text-danger">{errors.phone_number}</div>}
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                        <p className="text-danger">
                             Your email address is unverified.
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
-                                className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                className="btn btn-outline-secondary ms-2"
                             >
                                 Click here to re-send the verification email.
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
-                            <div className="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                            <div className="mt-2 text-success mb-3">
                                 A new verification link has been sent to your email address.
                             </div>
                         )}
@@ -85,7 +71,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <button className='btn btn-outline-primary' disabled={processing}>Save</button>
 
                     <Transition
                         show={recentlySuccessful}
@@ -94,7 +80,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+                        <p className="alert alert-success mt-2">Successfully Saved.</p>
                     </Transition>
                 </div>
             </form>

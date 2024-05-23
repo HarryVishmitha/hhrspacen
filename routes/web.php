@@ -17,8 +17,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['auth', 'verified', 'user'])->name('dashboard');
-
-Route::get('admin/dashboard', [AdminController::class, 'index'] )->middleware(['auth', 'verified', 'admin'])->name('adminDashboard');
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('admin/dashboard', [AdminController::class, 'index'] )->name('adminDashboard');
+});
+Route::get('admin/user-manage', [AdminController::class, 'user_manage'] )->middleware(['auth', 'verified', 'admin'])->name('adminAddusers');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
