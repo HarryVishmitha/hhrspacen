@@ -31,7 +31,12 @@ export default function DeleteUserForm({ className = '' }) {
 
         destroy(route('profile.destroy'), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
+            onSuccess: () => {
+                closeModal()
+                $('body').removeClass('modal-open');
+                $('body').css('overflow', '');
+                $('.modal-backdrop').remove();
+            },
             onError: () => passwordInput.current.focus(),
             onFinish: () => reset(),
         });
@@ -39,7 +44,6 @@ export default function DeleteUserForm({ className = '' }) {
 
     const closeModal = () => {
         setConfirmingUserDeletion(false);
-
         reset();
     };
 
@@ -54,8 +58,41 @@ export default function DeleteUserForm({ className = '' }) {
                 </p>
             </header>
 
-            <button className='btn btn-danger' onClick={confirmUserDeletion}>Delete Account</button>
 
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#userdeleteconfirm" onClick={confirmUserDeletion}>Delete Account</button>
+            <div class="modal fade" id="userdeleteconfirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-warning" id="exampleModalLabel">Are you sure you want to delete your account?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form onSubmit={deleteUser} className="p-6">
+                                <p className="mt-1 text-danger">
+                                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
+                                    enter your password to confirm you would like to permanently delete your account.
+                                </p>
+
+                                <div className="form-floating mb-3">
+                                    <input type="password" className="form-control"  id="password" placeholder="password"  ref={passwordInput} name="password" value={data.password} autoComplete="current-password"  onChange={(e) => setData('password', e.target.value)}/>
+                                    <label htmlFor="floatingInput">Password</label>
+                                    {errors.password && <div className="text-danger">{errors.password}</div>}
+                                </div>
+
+                                <div className="mt-3 flex justify-end">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                    <button className="ms-3 btn btn-danger" disabled={processing}>
+                                        Delete Account
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{/*
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -93,7 +130,7 @@ export default function DeleteUserForm({ className = '' }) {
                         </DangerButton>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
         </section>
     );
 }

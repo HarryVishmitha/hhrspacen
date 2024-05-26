@@ -168,3 +168,65 @@ body{
 .container {
     border-radius: 5px;
 }
+.border-radius {
+    border-radius: 10px !important;
+}
+.card {
+    width: 300px;
+    min-height: 250px;
+    border-radius: 15px;
+}
+
+.badge {
+    bottom: -30px;
+    right: -30px;
+    width: 125px;
+    height: 125px;
+    background-color: yellow;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-45deg);
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+    animation: rotate 10s linear infinite;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.badge-inner {
+    bottom: -6px;
+    right: -6px;
+    width: 78px;
+    height: 78px;
+    background-color: black;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 12px;
+}
+
+.small-word {
+    font-size: 10px;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+}
+.printair-red {
+    color: #f44032;
+}
+.bg-printair-red {
+    background-color: #f44032;
+}

@@ -31,10 +31,53 @@ export default function Home({ auth }) {
                 </div>
                 <div className="special-of-weeks" id="special-of-week">
                     <div className="h2 be-vietnam-pro-bold">Best Offers in this Week</div>
+                    <div className="container d-flex justify-content-center align-items-center mb-5">
+                        <div className="card position-relative text-center p-4 shadow">
+                            <h2 className="text-decoration-underline be-vietnam-pro-semibold printair-red">
+                                Vesak Offer
+                            </h2>
+                            <div className="texts">
+                                <strong>Valid From:</strong><span> 2024.05.12</span><br />
+                                <strong>Valid till:</strong><span> 2024.05.31</span>
+                                <div className="be-vietnam-pro-light text-primary">
+                                    This special only for Dansal event planners
+                                </div>
+                            </div>
+                            <div className="badge position-absolute">
+                                <svg viewBox="0 0 100 100">
+                                    <path id="circle" fill="none" stroke="none" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"/>
+                                    <text>
+                                        <textPath href="#circle" startOffset="50%">
+                                            SALE SALE SALE SALE SALE
+                                        </textPath>
+                                    </text>
+                                </svg>
+                            </div>
+                            <div className="badge-inner position-absolute">
+                                <div className="small-word">Only Rs.</div>
+                                <div className="price">120/=</div>
+                            </div>
+                            T&C apply.
+                        </div>
+                    </div>
                 </div>
-                <div className="products" id="Products">
-                    <div className="h2 be-vietnam-pro-bold">Our Products</div>
-
+            </div>
+            <div className="products" id="Products">
+                <div className="container-fluid bg-printair-red text-light p-3">
+                    <div className="container">
+                        {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
+                            X-Banners
+                        </div> */}
+                        <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
+                            Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">X-Banners</span>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-4 bg-light">HI</div>
+                            <div className="col-sm-8 d-flex justify-content-center align-items-center">
+                                <p>Welcome to the future of dynamic and portable advertising! Our X Banners are the perfect blend of elegance and functionality, designed to captivate and engage your audience effortlessly. Whether you’re at a trade show, retail store, or a special event, our X Banners will ensure your message stands out with stunning clarity and impact.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
