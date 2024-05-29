@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Offer;
 
 class AdminController extends Controller
 {
@@ -102,6 +103,47 @@ class AdminController extends Controller
                     'title' => "Add New Product",
                 ],
             ]);
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+    public function offers(Request $request) {
+        $role = Auth::user()->role;
+        if ($role === 'admin') {
+            $offers = Offer::all();
+            $offersExist = $offers->isNotEmpty();
+            return Inertia::render('Admin/offers',
+        [
+            'offers' => $offers,
+            'offersExist' => $offersExist,
+        ]);
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+    public function adminAddoffer(Request $request) {
+        $role = Auth::user()->role;
+        if ($role === 'admin') {
+            // Validate the request
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'valid_from' => 'required|date',
+                'valid_till' => 'required|date|after_or_equal:valid_from',
+                'description' => 'required|string',
+                'price' => 'numeric|min:0|required',
+            ]);
+
+            // Create a new offer
+            Offer::create([
+                'title' => $request->title,
+                'from_date' => $request->valid_from,
+                'end_date' => $request->valid_till,
+                'description' => $request->description,
+                'price' => $request->price,
+            ]);
+
+            // Redirect or return a success response
+            return redirect()->route('adminoffers')->with('success', 'Offer added successfully!');
         } else {
             return Inertia::render('errors/permitiondenied');
         }

@@ -26,6 +26,11 @@ export default function AdminSidebar({ user }) {
                                 </Link>
                             </li>
                             <li className="nav-item">
+                                <Link href={route('adminoffers')} className="nav-link link-dark-hoverable">
+                                    <i className="fa-solid fa-percent"></i> Offers
+                                </Link>
+                            </li>
+                            <li className="nav-item">
                                 <Link href={route('adminproducts')} className="nav-link link-dark-hoverable">
                                     <i className="fa-solid fa-bag-shopping"></i> Products
                                 </Link>

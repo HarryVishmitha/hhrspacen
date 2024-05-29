@@ -4,17 +4,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Home;
 use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
+Route::get('/', [Home::class, 'index'])->name('home');
 
 Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['auth', 'verified', 'user'])->name('dashboard');
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
@@ -24,6 +18,8 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/admin/settings', [AdminController::class, 'settings'])->name('adminsettings');
     Route::get('/admin/products', [AdminController::class, 'products'])->name('adminproducts');
     Route::get('/admin/add-new-product', [AdminController::class, 'addNewProduct'])->name('adminaddProduct');
+    Route::get('/admin/offers', [AdminController::class, 'offers'])->name('adminoffers');
+    Route::post('/admin/add-new-offer', [AdminController::class, 'adminAddoffer'])->name('adminAddoffer');
 });
 
 Route::middleware('auth')->group(function () {

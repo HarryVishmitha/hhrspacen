@@ -1,13 +1,20 @@
 import { Link, Head } from "@inertiajs/react";
 import NavLayout1 from "../Layouts/navs/NavLayout1";
 
-export default function Home({ auth }) {
+export default function Home({ auth, offers, offersExist, products }) {
     const handleImageError = () => {
         document.getElementById('screenshot-container')?.classList.add('!hidden');
         document.getElementById('docs-card')?.classList.add('!row-span-1');
         document.getElementById('docs-card-content')?.classList.add('!flex-row');
         document.getElementById('background')?.classList.add('!hidden');
     };
+    // // Filter valid offers based on current date
+    const currentDate = new Date();
+    const validOffers = offers.filter(offer => {
+        const startDate = new Date(offer.from_date);
+        const endDate = new Date(offer.end_date);
+        return currentDate >= startDate && currentDate <= endDate;
+    });
 
     return (
         <>
@@ -31,16 +38,18 @@ export default function Home({ auth }) {
                 </div>
                 <div className="special-of-weeks" id="special-of-week">
                     <div className="h2 be-vietnam-pro-bold">Best Offers in this Week</div>
-                    <div className="container d-flex justify-content-center align-items-center mb-5">
-                        <div className="card position-relative text-center p-4 shadow">
+                    {offersExist ? (
+                    <div className="container d-flex justify-content-center align-items-center mb-5 row">
+                        {validOffers.map((offers) => (
+                        <div className="card position-relative text-center p-4 shadow me-5 col-auto mb-5">
                             <h2 className="text-decoration-underline be-vietnam-pro-semibold printair-red">
-                                Vesak Offer
+                                {offers.title}
                             </h2>
                             <div className="texts">
-                                <strong>Valid From:</strong><span> 2024.05.12</span><br />
-                                <strong>Valid till:</strong><span> 2024.05.31</span>
+                                <strong>Valid From:</strong><span> {offers.from_date}</span><br />
+                                <strong>Valid till:</strong><span> {offers.end_date}</span>
                                 <div className="be-vietnam-pro-light text-primary">
-                                    This special only for Dansal event planners
+                                    {offers.description}
                                 </div>
                             </div>
                             <div className="badge position-absolute">
@@ -55,31 +64,46 @@ export default function Home({ auth }) {
                             </div>
                             <div className="badge-inner position-absolute">
                                 <div className="small-word">Only Rs.</div>
-                                <div className="price">120/=</div>
+                                <div className="price">{offers.price}</div>
                             </div>
                             T&C apply.
                         </div>
+                        ))}
                     </div>
+                    ) : (
+                        <div className="alert alert-warning">Sorry! We Don't have any offers right now.</div>
+                    )}
                 </div>
             </div>
-            <div className="products" id="Products">
-                <div className="container-fluid bg-printair-red text-light p-3">
-                    <div className="container">
-                        {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
-                            X-Banners
-                        </div> */}
-                        <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
-                            Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">X-Banners</span>
-                        </div>
-                        <div className="row">
-                            <div className="col-sm-4 bg-light">HI</div>
-                            <div className="col-sm-8 d-flex justify-content-center align-items-center">
-                                <p>Welcome to the future of dynamic and portable advertising! Our X Banners are the perfect blend of elegance and functionality, designed to captivate and engage your audience effortlessly. Whether you’re at a trade show, retail store, or a special event, our X Banners will ensure your message stands out with stunning clarity and impact.</p>
+            {/* Products */}
+            {products.map((product) => (
+                console.log(product),
+
+                product.published && product.id === 1 && (
+                    // x-Banner
+                    <div key={product.id} className="products" id="Products">
+                        <div className="container-fluid bg-printair-red text-light p-3">
+                            <div className="container">
+                                {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
+                                    X-Banners
+                                </div> */}
+                                <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
+                                    Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">X-Banners</span>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-4"><img src="img/x-banner.jpg" alt="X Banners" className="border-radius shadow" width={'100%'} /></div>
+                                    <div className="col-sm-8 d-flex align-items-center ps-4">
+                                        <div className="des">
+                                            <p>Welcome to the future of dynamic and portable advertising! Our X Banners are the perfect blend of elegance and functionality, designed to captivate and engage your audience effortlessly. Whether you’re at a trade show, retail store, or a special event, our X Banners will ensure your message stands out with stunning clarity and impact.</p>
+                                            <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                )
+            ))}
         </>
     );
 }
