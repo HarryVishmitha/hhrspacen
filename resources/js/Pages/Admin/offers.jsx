@@ -12,7 +12,11 @@ export default function offers({ auth, offers, offersExist }) {
         valid_till: '',
         description: '',
         price: '',
+
     });
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route('adminAddoffer'), {
@@ -49,6 +53,10 @@ export default function offers({ auth, offers, offersExist }) {
                                                 <input type="text" className="form-control"  id="title" placeholder="Vesak Offer" name='title' value={data.title} onChange={(e) => setData('title', e.target.value)}/>
                                                 <label htmlFor="floatingInput">Offer Title (Ex: Vesak Offer)</label>
                                                 {errors.title && <div className="text-danger">{errors.title}</div>}
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="formFile" class="form-label">Default file input example</label>
+                                                <input class="form-control" type="file" id="offerImg" name='offerImg'/>
                                             </div>
                                             <div className="form-floating mb-3">
                                                 <input

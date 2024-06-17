@@ -42,6 +42,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                     <div className="container d-flex justify-content-center align-items-center mb-5 row">
                         {validOffers.map((offers) => (
                         <div className="card position-relative text-center p-4 shadow me-5 col-auto mb-5">
+                            <img src="" class="card-img-top" alt="Offer Image"/>
                             <h2 className="text-decoration-underline be-vietnam-pro-semibold printair-red">
                                 {offers.title}
                             </h2>
