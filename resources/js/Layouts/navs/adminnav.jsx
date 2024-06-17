@@ -5,7 +5,7 @@ export default function adminnav({ user }) {
     return(
         <>
             <div className="container-fluid d-grid gap-3 align-items-center cloumn1 bg-light d-flex justify-content-between">
-                <Link href={ route('adminDashboard') } className="navbar-brand ms-3 p-2">
+                <Link href={ route('home') } className="navbar-brand ms-3 p-2">
                     <img src="/img/wg-logo.png" alt="Logo" className="d-inline-block align-text-top logo"/>
                 </Link>
                 <div className="h3 d-none d-lg-block be-vietnam-pro-semibold">Welcome Back {user.name} </div>

@@ -5,11 +5,15 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Home;
+use App\Http\Controllers\Products;
 use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 
 Route::get('/', [Home::class, 'index'])->name('home');
-
+Route::group([], function () {
+    Route::get('/products', [Products::class, 'index'])->name('products');
+    Route::get('/products/x-banners', [Products::class, 'x-banners'])->name('products.x-banners');
+});
 Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['auth', 'verified', 'user'])->name('dashboard');
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'] )->name('adminDashboard');

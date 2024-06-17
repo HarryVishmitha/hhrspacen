@@ -56,7 +56,9 @@ export default function Home({ auth, offers, offersExist, products }) {
                             Classy, attractive, indoor banner stands are versatile and creative ways to get your message to the masses.
                             X stand banners and Roll up banners are a useful signage option to drive more traffic and clients your way.
                         </p>
-                        <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{fontSize: '20px'}}>Shop Now!</div>
+                        <Link href={route('products')}>
+                            <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{fontSize: '20px'}}>Shop Now!</div>
+                        </Link>
                     </div>
                     <div className="col-sm-7 d-flex justify-content-center order-sm-last">
                         <img src="img/cover.png" alt="Cover Image" width={'75%'}/>
@@ -74,7 +76,9 @@ export default function Home({ auth, offers, offersExist, products }) {
                                 Classy, attractive, indoor banner stands are versatile and creative ways to get your message to the masses.
                                 X stand banners and Roll up banners are a useful signage option to drive more traffic and clients your way.
                             </p>
-                            <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{fontSize: '20px'}}>Shop Now!</div>
+                            <Link href={route('products')}>
+                                <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{fontSize: '20px'}}>Shop Now!</div>
+                            </Link>
                         </div>
                         <div className="col-sm-7 d-flex justify-content-center order-sm-last">
                             <img src="img/x-banner.jpg" alt="Cover Image" width={'75%'}/>
@@ -142,7 +146,9 @@ export default function Home({ auth, offers, offersExist, products }) {
                                     <div className="col-sm-8 d-flex align-items-center ps-4">
                                         <div className="des">
                                             <p>Welcome to the future of dynamic and portable advertising! Our X Banners are the perfect blend of elegance and functionality, designed to captivate and engage your audience effortlessly. Whether you’re at a trade show, retail store, or a special event, our X Banners will ensure your message stands out with stunning clarity and impact.</p>
-                                            <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
+                                            <Link href={route('products.x-banners')}>
+                                                <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
