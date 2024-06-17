@@ -1,5 +1,6 @@
 import { Link, Head } from "@inertiajs/react";
 import NavLayout1 from "../Layouts/navs/NavLayout1";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 export default function Home({ auth, offers, offersExist, products }) {
     const handleImageError = () => {
@@ -16,12 +17,37 @@ export default function Home({ auth, offers, offersExist, products }) {
         return currentDate >= startDate && currentDate <= endDate;
     });
 
+    useEffect(() =>{
+        const slides = document.getElementsByClassName('slides');
+        const slideCount = slides.length;
+        let slideNumber = 0;
+        showslide();
+
+        function showslide() {
+            let i;
+            for (let i = 0; i < slides.length; i++) {
+                // slides[i].style.display = 'none';
+                slides[i].classList.remove('show');
+            }
+            slideNumber++
+            if (slideNumber > slides.length) {
+                slideNumber = 1
+            }
+            // slides[slideNumber-1].style.display = "block";
+            slides[slideNumber - 1].classList.add('show');
+            setTimeout(showslide, 5000);
+        }
+    });
+
     return (
         <>
             <Head title="Home" />
             <NavLayout1/>
-            <div className="container mt-4 ">
-                <div className="row">
+            <div className="container mt-4">
+                <div className="slide-container" style={{margin: 'auto'}}>
+                {/* slide 1 */}
+                <div className="slides fade">
+                    <div className="row">
                     <div className="col-sm-5 mt-3">
                         <div className="be-vietnam-pro-black home-main-text">
                             Boost your Business with Customized Banners...
@@ -35,7 +61,28 @@ export default function Home({ auth, offers, offersExist, products }) {
                     <div className="col-sm-7 d-flex justify-content-center order-sm-last">
                         <img src="img/cover.png" alt="Cover Image" width={'75%'}/>
                     </div>
+                    </div>
                 </div>
+                {/* slide 2 */}
+                <div className="slides fade">
+                    <div className="row">
+                        <div className="col-sm-5 mt-3">
+                            <div className="be-vietnam-pro-black home-main-text">
+                                Boost your Business with Customized Bannerhfgtytdftds...
+                            </div>
+                            <p className="para be-vietnam-pro-regular">
+                                Classy, attractive, indoor banner stands are versatile and creative ways to get your message to the masses.
+                                X stand banners and Roll up banners are a useful signage option to drive more traffic and clients your way.
+                            </p>
+                            <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{fontSize: '20px'}}>Shop Now!</div>
+                        </div>
+                        <div className="col-sm-7 d-flex justify-content-center order-sm-last">
+                            <img src="img/x-banner.jpg" alt="Cover Image" width={'75%'}/>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                {/* Offers */}
                 <div className="special-of-weeks" id="special-of-week">
                     <div className="h2 be-vietnam-pro-bold">Best Offers in this Week</div>
                     {offersExist ? (
@@ -78,7 +125,6 @@ export default function Home({ auth, offers, offersExist, products }) {
             </div>
             {/* Products */}
             {products.map((product) => (
-                console.log(product),
 
                 product.published && product.id === 1 && (
                     // x-Banner
