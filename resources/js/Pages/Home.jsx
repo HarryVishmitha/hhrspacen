@@ -46,7 +46,7 @@ export default function Home({ auth, offers, offersExist, products }) {
             <div className="container mt-4">
                 <div className="slide-container" style={{margin: 'auto'}}>
                 {/* slide 1 */}
-                <div className="slides fade">
+                <div className="slides fade1">
                     <div className="row">
                     <div className="col-sm-5 mt-3">
                         <div className="be-vietnam-pro-black home-main-text">
@@ -66,7 +66,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                     </div>
                 </div>
                 {/* slide 2 */}
-                <div className="slides fade">
+                <div className="slides fade1">
                     <div className="row">
                         <div className="col-sm-5 mt-3">
                             <div className="be-vietnam-pro-black home-main-text">
@@ -93,7 +93,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                     <div className="container d-flex justify-content-center align-items-center mb-5 row">
                         {validOffers.map((offers) => (
                         <div className="card position-relative text-center p-4 shadow me-5 col-auto mb-5">
-                            <img src="" class="card-img-top" alt="Offer Image"/>
+                            <img src={offers.img} class="card-img-top" alt="Offer Image"/>
                             <h2 className="text-decoration-underline be-vietnam-pro-semibold printair-red">
                                 {offers.title}
                             </h2>
@@ -128,7 +128,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                 </div>
             </div>
             {/* Products */}
-            {products.map((product) => (
+            {/* {products.map((product) => (
 
                 product.published && product.id === 1 && (
                     // x-Banner
@@ -138,6 +138,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                                 {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
                                     X-Banners
                                 </div> */}
+                                {/*
                                 <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
                                     Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">X-Banners</span>
                                 </div>
@@ -156,7 +157,8 @@ export default function Home({ auth, offers, offersExist, products }) {
                         </div>
                     </div>
                 )
-            ))}
+            ))} */}
+            {/* End of product view */}
         </>
     );
 }

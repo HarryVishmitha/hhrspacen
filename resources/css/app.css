@@ -249,12 +249,12 @@ body{
     transition: opacity 1s ease; /* Smooth opacity transition */
 }
 
-.fade {
+.fade1 {
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
 
-.fade.show {
+.fade1.show {
     opacity: 1;
 }
 .slide-container {
