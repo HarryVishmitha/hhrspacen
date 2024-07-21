@@ -17,4 +17,8 @@ class Product extends Model
     {
         return $this->hasMany(PriceList::class);
     }
+    public function relatedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'product_vearient', 'product_id', 'related_product_id');
+    }
 }

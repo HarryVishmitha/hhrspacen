@@ -23,6 +23,7 @@ class Products extends Controller
                 'description' => $product->description,
                 'published' => $product->published,
                 'template_type' => $product->template_type,
+                'vearients' => $product->vearients,
                 'prices' => $product->priceLists->map(function($priceList) {
                     return [
                         'price' => $priceList->price,
