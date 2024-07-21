@@ -10,7 +10,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'simple_description', 'description', 'published', 'template_type'
+        'name', 'simple_description', 'description', 'published', 'template_type', 'vearients'
     ];
 
     public function priceLists()
