@@ -1,5 +1,5 @@
 import { Link, Head } from "@inertiajs/react";
-import NavLayout1 from "../Layouts/navs/NavLayout1";
+
 
 export default function AuthRoleerror() {
     return (

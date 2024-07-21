@@ -34,6 +34,7 @@ class Home extends Controller
 
         $offers = Offer::all();
         $offersExist = $offers->isNotEmpty();
+
         return Inertia::render('Home', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),

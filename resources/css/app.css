@@ -230,7 +230,12 @@ body{
 .bg-printair-red {
     background-color: #f44032;
 }
-
+.printair-gray {
+    color: gray;
+}
+.bg-printair-gray {
+    background-color: gray;
+}
 /* .fade {
     animation-name: fade;
     animation-duration: 1.5s;
@@ -249,12 +254,12 @@ body{
     transition: opacity 1s ease; /* Smooth opacity transition */
 }
 
-.fade {
+.fade1 {
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
 
-.fade.show {
+.fade1.show {
     opacity: 1;
 }
 .slide-container {
@@ -262,4 +267,7 @@ body{
     width: 100%; /* Adjust width as needed */
     height: 550px; /* Adjust height as needed */
     overflow: hidden;
+}
+.center-align {
+    align-items: center;
 }

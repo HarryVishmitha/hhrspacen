@@ -18,7 +18,7 @@ export default function VerifyEmail({ status }) {
                 <div className="border col-sm-7">
                     <div className='branding d-flex justify-content-center align-items-center mt-2 mb-3'>
                         <Link href={route('home')} className='nav-link d-flex align-items-center justify-content-center'>
-                            <img src="/img/wg-logo.png" alt="Logo" className="login-brand"/>
+                            <img src="img/wg-logo.png" alt="Logo" className="login-brand"/>
                         </Link>
                     </div>
                     <div className="m-4 text-sm text-gray-600 dark:text-gray-400">

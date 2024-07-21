@@ -8,11 +8,14 @@ use App\Http\Controllers\Home;
 use App\Http\Controllers\Products;
 use App\Http\Controllers\UserController;
 use Inertia\Inertia;
+use Mockery\Matcher\MultiArgumentClosure;
 
 Route::get('/', [Home::class, 'index'])->name('home');
 Route::group([], function () {
     Route::get('/products', [Products::class, 'index'])->name('products');
-    Route::get('/products/x-banners', [Products::class, 'x-banners'])->name('products.x-banners');
+    Route::get('/products/x-banners', [Products::class, 'xbanners'])->name('products.x-banners');
+    Route::get('/products/pull-ups', [Products::class, 'pullups'])->name('products.pull-ups');
+    Route::get('/products/mugs', [Products::class, 'mugs'])->name('products.mugs');
 });
 Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['auth', 'verified', 'user'])->name('dashboard');
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {

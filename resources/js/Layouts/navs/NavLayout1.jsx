@@ -18,7 +18,7 @@ export default function NavLayout1() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link href={ route('home')} className="nav-link">
+                            <Link href={ route('products')} className="nav-link">
                                 Products
                             </Link>
                         </li>

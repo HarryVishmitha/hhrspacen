@@ -1,5 +1,6 @@
 import { Link, Head } from "@inertiajs/react";
 import NavLayout1 from "../Layouts/navs/NavLayout1";
+import Footer from "../Layouts/Footer";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 
 export default function Home({ auth, offers, offersExist, products }) {
@@ -46,7 +47,7 @@ export default function Home({ auth, offers, offersExist, products }) {
             <div className="container mt-4">
                 <div className="slide-container" style={{margin: 'auto'}}>
                 {/* slide 1 */}
-                <div className="slides fade">
+                <div className="slides fade1">
                     <div className="row">
                     <div className="col-sm-5 mt-3">
                         <div className="be-vietnam-pro-black home-main-text">
@@ -61,12 +62,12 @@ export default function Home({ auth, offers, offersExist, products }) {
                         </Link>
                     </div>
                     <div className="col-sm-7 d-flex justify-content-center order-sm-last">
-                        <img src="img/cover.png" alt="Cover Image" width={'75%'}/>
+                        <img src="/img/cover.png" alt="Cover Image" width={'75%'}/>
                     </div>
                     </div>
                 </div>
                 {/* slide 2 */}
-                <div className="slides fade">
+                <div className="slides fade1">
                     <div className="row">
                         <div className="col-sm-5 mt-3">
                             <div className="be-vietnam-pro-black home-main-text">
@@ -81,7 +82,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                             </Link>
                         </div>
                         <div className="col-sm-7 d-flex justify-content-center order-sm-last">
-                            <img src="img/x-banner.jpg" alt="Cover Image" width={'75%'}/>
+                            <img src="/img/x-banner.jpg" alt="Cover Image" width={'75%'}/>
                         </div>
                     </div>
                 </div>
@@ -89,7 +90,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                 {/* Offers */}
                 <div className="special-of-weeks" id="special-of-week">
                     <div className="h2 be-vietnam-pro-bold">Best Offers in this Week</div>
-                    {offersExist ? (
+                    {offersExist & validOffers.length > 0 ? (
                     <div className="container d-flex justify-content-center align-items-center mb-5 row">
                         {validOffers.map((offers) => (
                         <div className="card position-relative text-center p-4 shadow me-5 col-auto mb-5">
@@ -157,6 +158,77 @@ export default function Home({ auth, offers, offersExist, products }) {
                     </div>
                 )
             ))}
+
+
+            {products.map((product) => (
+
+                product.published && product.id === 2 && (
+                    // Pull Ups
+                    <div key={product.id} className="products" id="Products">
+                        <div className="container-fluid bg-printair-gray text-light p-3">
+                            <div className="container">
+                                {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
+                                    X-Banners
+                                </div> */}
+                                <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
+                                    Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">Pull-up Banners (Roll-ups)</span>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-4"><img src="img/x-banner.jpg" alt="X Banners" className="border-radius shadow" width={'100%'} /></div>
+                                    <div className="col-sm-8 d-flex align-items-center ps-4">
+                                        <div className="des">
+                                            <p>Elevate your advertising with our sleek and versatile Pull-Up Banners! Perfect for trade shows, events, and retail spaces, these banners are designed for easy setup and portability. With a smooth retractable mechanism and vibrant print quality, our Pull-Up Banners make it simple to showcase your message with professionalism and impact.</p>
+                                            <Link href={route('products.pull-ups')}>
+                                                <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            ))}
+            {products.map((product) => (
+
+                product.published && product.id === 3 && (
+                    // Mugs
+                    <div key={product.id} className="products" id="Products">
+                        <div className="container-fluid bg-printair-red text-light p-3">
+                            <div className="container">
+                                {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
+                                    X-Banners
+                                </div> */}
+                                <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
+                                Personalized Printed<span className="text-warning text-decoration-underline"> Mugs </span>- Perfect for Every Occasion!
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-4"><img src="img/x-banner.jpg" alt="X Banners" className="border-radius shadow" width={'100%'} /></div>
+                                    <div className="col-sm-8 d-flex align-items-center ps-4">
+                                        <div className="des">
+                                            <p>Introducing our collection of personalized printed mugs, designed to add a special touch to your everyday moments and celebrations. Whether you're looking for the perfect birthday gift, a thoughtful present for a loved one, or a unique promotional item for your business, our mugs are the ideal choice. Each mug can be customized according to your specific needs, allowing you to add your own designs, messages, or photos. Made from high-quality materials, our printed mugs are both durable and stylish, ensuring that your personalized creation will be cherished for years to come. Make every sip special with our one-of-a-kind printed mugs!</p>
+                                            <Link href={route('products.mugs')}>
+                                                <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            ))}
+            <div className="mt-5 mb-5">
+                <div className="container d-flex justify-content-center align-items-center">
+                    <div className="h2 be-vietnam-pro-extrabold">Looking for another products come and view</div>
+                </div>
+                <div className="container d-flex justify-content-center align-items-center">
+                    <Link href={route('products')}>
+                        <button className="btn btn-outline-danger"><span className="h5">We have more products</span></button>
+                    </Link>
+                </div>
+            </div>
+            <Footer />
         </>
     );
 }

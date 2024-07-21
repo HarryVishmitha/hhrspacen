@@ -33,7 +33,7 @@ export default function Login({ status, canResetPassword }) {
                 <div className="border col-sm-3">
                     <div className='branding d-flex justify-content-center align-items-center mt-2 mb-3'>
                         <Link href={route('home')} className='nav-link d-flex align-items-center justify-content-center'>
-                            <img src="/img/wg-logo.png" alt="Logo" className="login-brand"/>
+                            <img src="img/wg-logo.png" alt="Logo" className="login-brand"/>
                         </Link>
                     </div>
                     <div className="login m-2">
@@ -58,7 +58,7 @@ export default function Login({ status, canResetPassword }) {
                             </div>
                             <div className="flex items-center justify-end mt-2 mb-3">
                                 {canResetPassword && (
-                                    <Link         
+                                    <Link
                                         href={route('password.request')}
                                         className="nav-link"
                                     >
