@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Offer;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -127,11 +128,18 @@ class AdminController extends Controller
             // Validate the request
             $request->validate([
                 'title' => 'required|string|max:255',
+                'img'  => 'required|image|mimes:jpg,jpeg,png,gif',
                 'valid_from' => 'required|date',
                 'valid_till' => 'required|date|after_or_equal:valid_from',
                 'description' => 'required|string',
                 'price' => 'numeric|min:0|required',
             ]);
+
+            //upload img
+            $image = $request->file('img');
+            $currentDateTime = Carbon::now()->format('Ymd_His');
+            $encyptedName =  hash('sha256', $currentDateTime) . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('images', $encyptedName, 'public');
 
             // Create a new offer
             Offer::create([
@@ -140,6 +148,7 @@ class AdminController extends Controller
                 'end_date' => $request->valid_till,
                 'description' => $request->description,
                 'price' => $request->price,
+                'img' => $path,
             ]);
 
             // Redirect or return a success response

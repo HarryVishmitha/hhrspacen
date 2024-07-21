@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link, Head, useForm } from '@inertiajs/react';
 import Adminnav from "../../Layouts/navs/adminnav";
 import AdminSidebar from '../../Layouts/navs/AdminSidebar';
+import React, { useState } from 'react';
 
 export default function offers({ auth, offers, offersExist }) {
     const currentDate = new Date();
@@ -12,17 +12,31 @@ export default function offers({ auth, offers, offersExist }) {
         valid_till: '',
         description: '',
         price: '',
-
+        img: null,
     });
+
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('valid_from', data.valid_from);
+        formData.append('valid_till', data.valid_till);
+        formData.append('description', data.description);
+        formData.append('price', data.price);
+        formData.append('img', file);
         post(route('adminAddoffer'), {
+            data: formData,
             onSuccess: () => {
                 reset();
                 document.getElementById('closeBtn').click();
+            },
+            headers: {
+                'Content-Type': 'multipart/form-data',
             },
         });
     };
@@ -54,9 +68,10 @@ export default function offers({ auth, offers, offersExist }) {
                                                 <label htmlFor="floatingInput">Offer Title (Ex: Vesak Offer)</label>
                                                 {errors.title && <div className="text-danger">{errors.title}</div>}
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="formFile" class="form-label">Default file input example</label>
-                                                <input class="form-control" type="file" id="offerImg" name='offerImg'/>
+                                            <div className="mb-3">
+                                                <label htmlFor="formFile" className="form-label">Image of Offer</label>
+                                                <input className="form-control" type="file" id="img" name='img' onChange={handleFileChange} />
+                                                {errors.img && <div className="text-danger">{errors.img}</div>}
                                             </div>
                                             <div className="form-floating mb-3">
                                                 <input
