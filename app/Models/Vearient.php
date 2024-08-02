@@ -19,6 +19,11 @@ class Vearient extends Model
 
     public function relatedProducts()
     {
-        return Product::whereIn('id', $this->related_product_ids)->get();
+        // Ensure related_product_ids is an array before querying
+        $relatedProductIds = $this->related_product_ids ?? [];
+        if (empty($relatedProductIds)) {
+            return collect([]);
+        }
+        return Product::whereIn('id', $relatedProductIds)->get();
     }
 }

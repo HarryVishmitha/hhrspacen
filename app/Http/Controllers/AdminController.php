@@ -91,7 +91,7 @@ class AdminController extends Controller
     public function products() {
         $role = Auth::user()->role;
         if ($role === 'admin') {
-            $products = Product::with('priceLists')->where('published', true)->get();
+            $products = Product::with('priceLists', 'variants')->get();
             $productsWithPrices = $products->map(function($product) {
                 return [
                     'id' => $product->id,
@@ -100,8 +100,12 @@ class AdminController extends Controller
                     'description' => $product->description,
                     'published' => $product->published,
                     'template_type' => $product->template_type,
-                    'variants' => $product->variants->map(function($variant) {
-                        return $variant->only('id', 'related_product_ids');
+                    'variants' => $product->variants->map(function ($variant) {
+                        return [
+                            'id' => $variant->id,
+                            'related_product_ids' => $variant->related_product_ids,
+                            'related_products' => $variant->relatedProducts()
+                        ];
                     }),
                     'prices' => $product->priceLists->map(function($priceList) {
                         return [
