@@ -1,9 +1,9 @@
-import React from 'react';
 import { Link, Head } from '@inertiajs/react';
 import Adminnav from "../../Layouts/navs/adminnav";
 import AdminSidebar from '../../Layouts/navs/AdminSidebar';
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
-export default function products({ auth, nav }) {
+export default function products({ auth, nav, products}) {
 
     return(
         <>
@@ -18,6 +18,7 @@ export default function products({ auth, nav }) {
                         <Link href={route('adminaddProduct')}>
                             <div className="btn btn-outline-primary">Add New Product</div>
                         </Link>
+                        
                     </div>
                 </div>
             </div>

@@ -12,18 +12,12 @@ class Vearient extends Model
         'related_product_ids' => 'array',
     ];
 
-    /**
-     * Get the product that owns the vearient.
-     */
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * Retrieve related products.
-     */
-    public function getRelatedProducts()
+    public function relatedProducts()
     {
         return Product::whereIn('id', $this->related_product_ids)->get();
     }

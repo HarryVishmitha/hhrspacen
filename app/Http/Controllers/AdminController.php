@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Offer;
 use Carbon\Carbon;
+use App\Models\Product;
 
 class AdminController extends Controller
 {
@@ -90,7 +91,29 @@ class AdminController extends Controller
     public function products() {
         $role = Auth::user()->role;
         if ($role === 'admin') {
-            return Inertia::render('Admin/products');
+            $products = Product::with('priceLists')->where('published', true)->get();
+            $productsWithPrices = $products->map(function($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'simple_description' => $product->simple_description,
+                    'description' => $product->description,
+                    'published' => $product->published,
+                    'template_type' => $product->template_type,
+                    'variants' => $product->variants->map(function($variant) {
+                        return $variant->only('id', 'related_product_ids');
+                    }),
+                    'prices' => $product->priceLists->map(function($priceList) {
+                        return [
+                            'price' => $priceList->price,
+                            'updated_on' => $priceList->updated_on,
+                        ];
+                    })
+                ];
+            });
+            return Inertia::render('Admin/products', [
+                'products' => $productsWithPrices,
+            ]);
         } else {
             return Inertia::render('errors/permitiondenied');
         }

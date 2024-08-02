@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PriceList;
+use App\Models\Vearient;
 
 class Product extends Model
 {
@@ -17,8 +18,8 @@ class Product extends Model
     {
         return $this->hasMany(PriceList::class);
     }
-    public function relatedProducts()
+    public function variants()
     {
-        return $this->belongsToMany(Product::class, 'product_vearient', 'product_id', 'related_product_id');
+        return $this->hasMany(Vearient::class);
     }
 }
