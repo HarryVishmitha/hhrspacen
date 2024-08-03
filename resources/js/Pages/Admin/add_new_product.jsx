@@ -64,7 +64,7 @@ export default function AddNewProduct({ auth, nav }) {
                                     className="form-control"
                                     id="product_description"
                                     placeholder="Product Description"
-                                    rows="3"
+                                    rows="5"
                                     value={data.product_description}
                                     onChange={e => setData('product_description', e.target.value)}
                                 ></textarea>

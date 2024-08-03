@@ -14,7 +14,7 @@ use App\Models\PriceList;
 class Products extends Controller
 {
     public function index() {
-        $products = Product::with('priceLists')->where('published', true)->get();;
+        $products = Product::with('priceLists')->where('published', true)->get();
         $productsWithPrices = $products->map(function($product) {
             return [
                 'id' => $product->id,

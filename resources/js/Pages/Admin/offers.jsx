@@ -167,7 +167,7 @@ export default function offers({ auth, offers, offersExist }) {
                                                     data-bs-target="#userEdit"
                                                     onClick={() => handleEditOffer(offers)}
                                                 >
-                                                    <i className='fa-solid fa-user-pen'></i>
+                                                    <i className="fa-solid fa-pen-to-square"></i>
                                                 </button>
                                             </td>
                                         </tr>
