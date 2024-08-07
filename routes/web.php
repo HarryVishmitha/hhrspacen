@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use Mockery\Matcher\MultiArgumentClosure;
 
 Route::get('/', [Home::class, 'index'])->name('home');
+Route::get('/about-us', [Home::class, 'about_us'])->name('about_us');
 Route::group([], function () {
     Route::get('/products', [Products::class, 'index'])->name('products');
     Route::get('/products/x-banners', [Products::class, 'xbanners'])->name('products.x-banners');

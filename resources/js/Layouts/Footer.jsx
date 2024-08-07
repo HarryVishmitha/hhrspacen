@@ -35,7 +35,7 @@ export default function Footer() {
                     <li className="nav-item mb-2"><Link href={route('products')} className="nav-link p-0 text-body-secondary">Design services</Link></li>
                     <li className="nav-item mb-2"><Link href="#" className="nav-link p-0 text-body-secondary">Price list</Link></li>
                     <li className="nav-item mb-2"><Link href="#" className="nav-link p-0 text-body-secondary">FAQs</Link></li>
-                    <li className="nav-item mb-2"><Link href="#" className="nav-link p-0 text-body-secondary">About</Link></li>
+                    <li className="nav-item mb-2"><Link href={route('about_us')} className="nav-link p-0 text-body-secondary">About</Link></li>
                     <li className="nav-item mb-2"><Link href="#" className="nav-link p-0 text-body-secondary">Sitemap</Link></li>
                 </ul>
             </div>

@@ -33,7 +33,7 @@ export default function NavLayout1() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link href={ route('home')} className="nav-link">
+                            <Link href={ route('about_us')} className="nav-link">
                                 Our Story
                             </Link>
                         </li>

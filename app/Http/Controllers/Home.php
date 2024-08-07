@@ -45,4 +45,8 @@ class Home extends Controller
             'products' => $productsWithPrices,
         ]);
     }
+
+    public function about_us() {
+        return Inertia::render('About');
+    }
 }
