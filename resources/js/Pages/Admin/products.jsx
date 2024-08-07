@@ -94,7 +94,7 @@ export default function products({ auth, nav, products}) {
                                             <option value='1'>Published</option>
                                             <option value="0">Not-Published</option>
                                         </select>
-                                        <label for="floatingSelect">Works with selects</label>
+                                        <label for="status">Works with selects</label>
                                     </div>
                                 </div>
                             )}
