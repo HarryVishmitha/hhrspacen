@@ -39,7 +39,6 @@ export default function Home({ auth, offers, offersExist, products }) {
             setTimeout(showslide, 5000);
         }
     });
-
     return (
         <>
             <Head title="Home" />
@@ -93,8 +92,8 @@ export default function Home({ auth, offers, offersExist, products }) {
                     {offersExist & validOffers.length > 0 ? (
                     <div className="container d-flex justify-content-center align-items-center mb-5 row">
                         {validOffers.map((offers) => (
-                        <div className="card position-relative text-center p-4 shadow me-5 col-auto mb-5">
-                            <img src={offers.img} class="card-img-top" alt="Offer Image"/>
+                        <div key={offers.id} className="card position-relative text-center p-4 shadow me-5 col-auto mb-5">
+                            <img src={offers.img} className="card-img-top" alt="Offer Image"/>
                             <h2 className="text-decoration-underline be-vietnam-pro-semibold printair-red">
                                 {offers.title}
                             </h2>
@@ -159,36 +158,33 @@ export default function Home({ auth, offers, offersExist, products }) {
                 )
             ))}
 
-
             {products.map((product) => (
 
-                product.published && product.id === 2 && (
-                    // Pull Ups
-                    <div key={product.id} className="products" id="Products">
-                        <div className="container-fluid bg-printair-gray text-light p-3">
-                            <div className="container">
-                                {/* <div className="product-name h2 be-vietnam-pro-semibold mb-3">
-                                    X-Banners
-                                </div> */}
-                                <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
-                                    Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">Pull-up Banners (Roll-ups)</span>
-                                </div>
-                                <div className="row">
-                                    <div className="col-sm-4"><img src="img/x-banner.jpg" alt="X Banners" className="border-radius shadow" width={'100%'} /></div>
-                                    <div className="col-sm-8 d-flex align-items-center ps-4">
-                                        <div className="des">
-                                            <p>Elevate your advertising with our sleek and versatile Pull-Up Banners! Perfect for trade shows, events, and retail spaces, these banners are designed for easy setup and portability. With a smooth retractable mechanism and vibrant print quality, our Pull-Up Banners make it simple to showcase your message with professionalism and impact.</p>
-                                            <Link href={route('products.pull-ups')}>
-                                                <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
-                                            </Link>
-                                        </div>
+            product.published && product.id === 2 && (
+                // Pull Ups
+                <div key={product.id} className="products" id="Products">
+                    <div className="container-fluid bg-printair-gray text-light p-3">
+                        <div className="container">
+                            <div className="semi-product-title be-vietnam-pro-semibold-italic h3">
+                                Elevate Your Company with Our Premium <span className="text-warning text-decoration-underline">Pull-up Banners (Roll-ups)</span>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-4"><img src="img/x-banner.jpg" alt="X Banners" className="border-radius shadow" width={'100%'} /></div>
+                                <div className="col-sm-8 d-flex align-items-center ps-4">
+                                    <div className="des">
+                                        <p>Elevate your advertising with our sleek and versatile Pull-Up Banners! Perfect for trade shows, events, and retail spaces, these banners are designed for easy setup and portability. With a smooth retractable mechanism and vibrant print quality, our Pull-Up Banners make it simple to showcase your message with professionalism and impact.</p>
+                                        <Link href={route('products.pull-ups')}>
+                                            <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                )
+                </div>
+            )
             ))}
+            
             {products.map((product) => (
 
                 product.published && product.id === 3 && (
