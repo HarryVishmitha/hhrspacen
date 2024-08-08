@@ -265,7 +265,7 @@ body{
 .slide-container {
     position: relative; /* Ensure the container is positioned relatively */
     width: 100%; /* Adjust width as needed */
-    height: 550px; /* Adjust height as needed */
+    height: 775px; /* Adjust height as needed */
     overflow: hidden;
 }
 .center-align {
@@ -273,4 +273,7 @@ body{
 }
 .sw-3 {
     font-size: 15px;
+}
+.row {
+  height: 100%;
 }
