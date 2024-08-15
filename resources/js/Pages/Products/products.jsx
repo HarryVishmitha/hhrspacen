@@ -1,5 +1,6 @@
 import { Link, Head } from "@inertiajs/react";
 import NavLayout1 from "../../Layouts/navs/NavLayout1";
+import Footer from "../../Layouts/Footer";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 
 export default function Home({ auth, offers, offersExist, products }) {
@@ -8,7 +9,7 @@ export default function Home({ auth, offers, offersExist, products }) {
         <>
             <Head title="Products" />
             <NavLayout1/>
-            <div className="container-fluid">
+            <div className="container-fluid mb-5">
                 <h1 className="be-vietnam-pro-bold mt-3 printair-red">All our Products</h1>
                 {products.length > 0 ? (
                     <div className="row ms-3 me-3">
@@ -29,6 +30,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                     <p>No products available</p>
                 )}
             </div>
+            <Footer/>
         </>
     );
 }

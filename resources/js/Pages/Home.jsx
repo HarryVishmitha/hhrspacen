@@ -184,7 +184,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                 </div>
             )
             ))}
-            
+
             {products.map((product) => (
 
                 product.published && product.id === 3 && (
@@ -216,7 +216,7 @@ export default function Home({ auth, offers, offersExist, products }) {
             ))}
             <div className="mt-5 mb-5">
                 <div className="container d-flex justify-content-center align-items-center">
-                    <div className="h2 be-vietnam-pro-extrabold">Looking for another products come and view</div>
+                    <div className="h2 be-vietnam-pro-extrabold">Looking for another products come and look</div>
                 </div>
                 <div className="container d-flex justify-content-center align-items-center">
                     <Link href={route('products')}>

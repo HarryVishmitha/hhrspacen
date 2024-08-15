@@ -277,3 +277,12 @@ body{
 .row {
   height: 100%;
 }
+.text-gray {
+    color: #808080;
+}
+.left-justify {
+    text-align: justify;
+}
+.bg-gray {
+    background-color: #808080;
+}
