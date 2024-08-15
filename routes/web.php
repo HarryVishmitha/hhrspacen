@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/admin/add-new-product', [AdminController::class, 'addNewProduct'])->name('adminaddProduct');
     Route::get('/admin/offers', [AdminController::class, 'offers'])->name('adminoffers');
     Route::post('/admin/add-new-offer', [AdminController::class, 'adminAddoffer'])->name('adminAddoffer');
+    Route::post('/admin/edit-offer', [AdminController::class, 'editoffer'])->name('editOffer');
 });
 
 Route::middleware('auth')->group(function () {

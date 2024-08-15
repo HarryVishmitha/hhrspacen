@@ -2,9 +2,28 @@ import { Link, Head, useForm } from '@inertiajs/react';
 import Adminnav from "../../Layouts/navs/adminnav";
 import AdminSidebar from '../../Layouts/navs/AdminSidebar';
 import React, { useState } from 'react';
+import axios from 'axios';
 
-export default function offers({ auth, offers, offersExist }) {
+export default function Offers({ auth, offers, offersExist }) {
+    const cardStyleqw = {
+        width: '50%',
+        height: 'auto',
+        border: 'solid #ffffff, 12px',
+        borderRadius: '10px', // Ensures the image covers the area without distortion
+        marginBottom: '2rem',
+    };
+
     const currentDate = new Date();
+    const [selectedOffer, setselectedOffer] = useState(null);
+    const [editedOffer, seteditedOffer] = useState({
+        id: null,
+        title: '',
+        valid_from: '',
+        valid_till: '',
+        description: '',
+        price: '',
+        img: null,
+    });
 
     const { data, setData, post, reset, errors } = useForm({
         title: '',
@@ -15,9 +34,10 @@ export default function offers({ auth, offers, offersExist }) {
         img: null,
     });
 
+    const [message, setMessage] = useState(null);
+
     const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0];
-        setFile(selectedFile);
+        setData('img', e.target.files[0]);
     };
 
     const handleSubmit = (e) => {
@@ -28,7 +48,8 @@ export default function offers({ auth, offers, offersExist }) {
         formData.append('valid_till', data.valid_till);
         formData.append('description', data.description);
         formData.append('price', data.price);
-        formData.append('img', file);
+        formData.append('img', data.img);
+
         post(route('adminAddoffer'), {
             data: formData,
             onSuccess: () => {
@@ -40,6 +61,67 @@ export default function offers({ auth, offers, offersExist }) {
             },
         });
     };
+
+    const handleOfferInputChange = (e) => {
+        const { name, value } = e.target;
+        seteditedOffer((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleEditOffer = (offer) => {
+        setselectedOffer(offer);
+        seteditedOffer({
+            id: offer.id, // Include the offer ID for editing
+            title: offer.title,
+            valid_from: offer.from_date,
+            valid_till: offer.end_date,
+            description: offer.description,
+            price: offer.price,
+            img: offer.img, // Use offer.img or handle it according to your logic
+        });
+    };
+
+    const handleCloseModal = () => {
+        setselectedOffer(null);
+        seteditedOffer({
+            id: null,
+            title: '',
+            valid_from: '',
+            valid_till: '',
+            description: '',
+            price: '',
+            img: null,
+        });
+        setMessage(null);
+    };
+
+    const handleSaveChanges = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('title', editedOffer.title);
+        formData.append('valid_from', editedOffer.valid_from);
+        formData.append('valid_till', editedOffer.valid_till);
+        formData.append('description', editedOffer.description);
+        formData.append('price', editedOffer.price);
+        if (editedOffer.img) {
+            formData.append('img', editedOffer.img); // Add image file to FormData
+        }
+
+        axios.post(`/updateOffer/${editedOffer.id}`, formData)
+            .then(response => {
+                setMessage({ type: 'success', content: response.data.message });
+                handleCloseModal(); // Close the modal and reset state
+                // Optionally: Reload the offers list or perform other actions
+            })
+            .catch(error => {
+                setMessage({ type: 'error', content: error.response.data.error });
+                // Handle error
+            });
+    };
+
     return (
         <>
             <Head title='Offers'/>
@@ -53,26 +135,43 @@ export default function offers({ auth, offers, offersExist }) {
                         <button type="button" className="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#addnewOffer">
                             Add New Offer
                         </button>
-                        {/* Add new Offer Modal */}
+
+                        {/* Add New Offer Modal */}
                         <div className="modal fade" id="addnewOffer" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div className="modal-dialog">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <h1 className="modal-title fs-5" id="exampleModalLabel">Add New Offer</h1>
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" id='closeBtn'></button>
                                     </div>
                                     <div className="modal-body">
                                         <form onSubmit={handleSubmit}>
                                             <div className="form-floating mb-3">
-                                                <input type="text" className="form-control"  id="title" placeholder="Vesak Offer" name='title' value={data.title} onChange={(e) => setData('title', e.target.value)}/>
-                                                <label htmlFor="floatingInput">Offer Title (Ex: Vesak Offer)</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="title"
+                                                    placeholder="Vesak Offer"
+                                                    name='title'
+                                                    value={data.title}
+                                                    onChange={(e) => setData('title', e.target.value)}
+                                                />
+                                                <label htmlFor="title">Offer Title (Ex: Vesak Offer)</label>
                                                 {errors.title && <div className="text-danger">{errors.title}</div>}
                                             </div>
+
                                             <div className="mb-3">
-                                                <label htmlFor="formFile" className="form-label">Image of Offer</label>
-                                                <input className="form-control" type="file" id="img" name='img' onChange={handleFileChange} />
+                                                <label htmlFor="formFile" className="form-label">Image of Offer 1080px X 1080px</label>
+                                                <input
+                                                    className="form-control"
+                                                    type="file"
+                                                    id="img"
+                                                    name='img'
+                                                    onChange={handleFileChange}
+                                                />
                                                 {errors.img && <div className="text-danger">{errors.img}</div>}
                                             </div>
+
                                             <div className="form-floating mb-3">
                                                 <input
                                                     type="date"
@@ -85,6 +184,7 @@ export default function offers({ auth, offers, offersExist }) {
                                                 <label htmlFor="valid_from">Valid From</label>
                                                 {errors.valid_from && <div className="text-danger">{errors.valid_from}</div>}
                                             </div>
+
                                             <div className="form-floating mb-3">
                                                 <input
                                                     type="date"
@@ -97,6 +197,7 @@ export default function offers({ auth, offers, offersExist }) {
                                                 <label htmlFor="valid_till">Valid Till</label>
                                                 {errors.valid_till && <div className="text-danger">{errors.valid_till}</div>}
                                             </div>
+
                                             <div className="form-floating mb-3">
                                                 <input
                                                     type="number"
@@ -110,6 +211,7 @@ export default function offers({ auth, offers, offersExist }) {
                                                 <label htmlFor="price">Price</label>
                                                 {errors.price && <div className="text-danger">{errors.price}</div>}
                                             </div>
+
                                             <div className="form-floating mb-3">
                                                 <textarea
                                                     className="form-control"
@@ -122,6 +224,7 @@ export default function offers({ auth, offers, offersExist }) {
                                                 <label htmlFor="description">Offer Description</label>
                                                 {errors.description && <div className="text-danger">{errors.description}</div>}
                                             </div>
+
                                             <button type="submit" className="btn btn-outline-primary">Add Offer</button>
                                         </form>
                                     </div>
@@ -131,8 +234,10 @@ export default function offers({ auth, offers, offersExist }) {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Offers List */}
                         {offersExist ? (
-                                <table className="table table-hover">
+                            <table className="table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Offer Title</th>
@@ -143,16 +248,16 @@ export default function offers({ auth, offers, offersExist }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {offers.map((offers) => (
-                                        <tr key={offers.id}>
-                                            <td>{offers.title}</td>
-                                            <td>{offers.from_date}</td>
-                                            <td>{offers.end_date}</td>
+                                    {offers.map((offer) => (
+                                        <tr key={offer.id}>
+                                            <td>{offer.title}</td>
+                                            <td>{offer.from_date}</td>
+                                            <td>{offer.end_date}</td>
                                             <td>
-                                                {currentDate < new Date(offers.from_date) ? (
+                                                {currentDate < new Date(offer.from_date) ? (
                                                     <div className="text-primary">Not Published yet.</div>
                                                 ) : (
-                                                    new Date(offers.end_date) < currentDate ? (
+                                                    new Date(offer.end_date) < currentDate ? (
                                                         <div className="text-danger">Expired</div>
                                                     ) : (
                                                         <div className="text-success">Active</div>
@@ -164,8 +269,8 @@ export default function offers({ auth, offers, offersExist }) {
                                                     className="btn btn-outline-secondary"
                                                     type="button"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#userEdit"
-                                                    onClick={() => handleEditOffer(offers)}
+                                                    data-bs-target="#offerEdit"
+                                                    onClick={() => handleEditOffer(offer)}
                                                 >
                                                     <i className="fa-solid fa-pen-to-square"></i>
                                                 </button>
@@ -174,9 +279,107 @@ export default function offers({ auth, offers, offersExist }) {
                                     ))}
                                 </tbody>
                             </table>
-                            ) : (
-                               <div className="alert alert-warning">No Offer available to show please add offers</div>
+                        ) : (
+                            <div className="alert alert-warning">No Offer available to show. Please add offers.</div>
                         )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Offer Edit Modal */}
+            <div className="modal fade" id="offerEdit" aria-labelledby="Offer Edits" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Edit Offer</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            {selectedOffer && (
+                                <div>
+                                    <div className="form-floating mb-3">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="etitle"
+                                            placeholder="Offer Title"
+                                            name='title'
+                                            value={editedOffer.title}
+                                            onChange={handleOfferInputChange}
+                                        />
+                                        <label htmlFor="etitle">Offer Title</label>
+                                        {errors.title && <div className="text-danger">{errors.title}</div>}
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="eformFile" className="form-label">Image of Offer</label>
+                                        <div className="shadow" style={cardStyleqw}>
+                                            <img src={editedOffer.img} className="card-img-top align-items-center" alt="offer image"/>
+                                        </div>
+                                        <input
+                                            className="form-control"
+                                            type="file"
+                                            id="eimg"
+                                            name='img'
+                                            onChange={(e) => seteditedOffer(prev => ({ ...prev, img: e.target.files[0] }))}
+                                        />
+                                    </div>
+
+                                    <div className="form-floating mb-3">
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            id="evalid_from"
+                                            name="valid_from"
+                                            value={editedOffer.valid_from}
+                                            onChange={handleOfferInputChange}
+                                        />
+                                        <label htmlFor="evalid_from">Valid From</label>
+                                    </div>
+
+                                    <div className="form-floating mb-3">
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            id="evalid_till"
+                                            name="valid_till"
+                                            value={editedOffer.valid_till}
+                                            onChange={handleOfferInputChange}
+                                        />
+                                        <label htmlFor="evalid_till">Valid Till</label>
+                                    </div>
+
+                                    <div className="form-floating mb-3">
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="eprice"
+                                            name="price"
+                                            placeholder='Price'
+                                            value={editedOffer.price}
+                                            onChange={handleOfferInputChange}
+                                        />
+                                        <label htmlFor="eprice">Price</label>
+                                    </div>
+
+                                    <div className="form-floating mb-3">
+                                        <textarea
+                                            className="form-control"
+                                            placeholder="Offer Description"
+                                            id="edescription"
+                                            name="description"
+                                            value={editedOffer.description}
+                                            onChange={handleOfferInputChange}
+                                        ></textarea>
+                                        <label htmlFor="edescription">Offer Description</label>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCloseModal}>Close</button>
+                            <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>

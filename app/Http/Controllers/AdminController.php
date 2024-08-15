@@ -151,37 +151,43 @@ class AdminController extends Controller
     }
     public function adminAddoffer(Request $request) {
         $role = Auth::user()->role;
+    
         if ($role === 'admin') {
             // Validate the request
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'img'  => 'required|image|mimes:jpg,jpeg,png,gif',
-                'valid_from' => 'required|date',
-                'valid_till' => 'required|date|after_or_equal:valid_from',
-                'description' => 'required|string',
-                'price' => 'numeric|min:0|required',
+            $validatedData = $request->validate([
+                'title' => ['required', 'string', 'max:255'],
+                'img' => ['required', 'image', 'mimes:jpg,jpeg,png,gif'],
+                'valid_from' => ['required', 'date'],
+                'valid_till' => ['required', 'date', 'after_or_equal:valid_from'],
+                'description' => ['required', 'string'],
+                'price' => ['required', 'numeric', 'min:0'],
             ]);
-
-            //upload img
+    
+            // Upload image
             $image = $request->file('img');
-            $currentDateTime = Carbon::now()->format('Ymd_His');
-            $encyptedName =  hash('sha256', $currentDateTime) . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('images', $encyptedName, 'public');
-
+            $uniqueName = hash('sha256', now()->timestamp . $image->getClientOriginalName()) . '.' . $image->extension();
+            $image->move(public_path('upload/offers'), $uniqueName);
+            $imagePath = '/upload/offers/' . $uniqueName;
+    
             // Create a new offer
             Offer::create([
-                'title' => $request->title,
-                'from_date' => $request->valid_from,
-                'end_date' => $request->valid_till,
-                'description' => $request->description,
-                'price' => $request->price,
-                'img' => $path,
+                'title' => $validatedData['title'],
+                'from_date' => $validatedData['valid_from'],
+                'end_date' => $validatedData['valid_till'],
+                'description' => $validatedData['description'],
+                'price' => $validatedData['price'],
+                'img' => $imagePath,
             ]);
-
+    
             // Redirect or return a success response
             return redirect()->route('adminoffers')->with('success', 'Offer added successfully!');
         } else {
+            // Unauthorized access
             return Inertia::render('errors/permitiondenied');
         }
+    }
+    
+    public function editoffer(Request $request, $offerId) {
+        
     }
 }
