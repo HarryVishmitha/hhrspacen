@@ -286,3 +286,13 @@ body{
 .bg-gray {
     background-color: #808080;
 }
+::selection {
+  background-color: rgb(255, 58, 58); /* Background color of the selected text */
+  color: rgb(255, 255, 255); /* Color of the selected text */
+}
+
+/* For WebKit browsers (e.g., Chrome, Safari) */
+::-webkit-selection {
+  background-color: rgb(255, 58, 58);
+  color: rgb(255, 255, 255);
+}

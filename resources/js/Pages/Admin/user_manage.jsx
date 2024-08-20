@@ -19,7 +19,7 @@ const UserManage = ({ auth, users, pagination }) => {
     };
 
     const handleSaveChanges = () => {
-        axios.post(`/updateUserRole/${selectedUser.id}`, { role: newRole })
+        axios.post(`/admin/updateUserRole/${selectedUser.id}`, { role: newRole })
             .then(response => {
                 setMessage({ type: 'success', content: response.data.message });
                 // Reload users list or update user role in local state if needed

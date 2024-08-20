@@ -2,6 +2,7 @@ import { Link, Head, useForm } from '@inertiajs/react';
 import Adminnav from "../../Layouts/navs/adminnav";
 import AdminSidebar from '../../Layouts/navs/AdminSidebar';
 import React, { useState } from 'react';
+import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 
 export default function Offers({ auth, offers, offersExist }) {
@@ -100,27 +101,50 @@ export default function Offers({ auth, offers, offersExist }) {
     const handleSaveChanges = (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('title', editedOffer.title);
-        formData.append('valid_from', editedOffer.valid_from);
-        formData.append('valid_till', editedOffer.valid_till);
-        formData.append('description', editedOffer.description);
-        formData.append('price', editedOffer.price);
+        const formData12 = new FormData();
+        formData12.append('etitle', editedOffer.title);
+        formData12.append('evalid_from', editedOffer.valid_from);
+        formData12.append('evalid_till', editedOffer.valid_till);
+        formData12.append('edescription', editedOffer.description);
+        formData12.append('eprice', editedOffer.price);
         if (editedOffer.img) {
-            formData.append('img', editedOffer.img); // Add image file to FormData
+            formData12.append('img', editedOffer.img); // Add image file to FormData
         }
+        console.log(formData12);
 
-        axios.post(`/updateOffer/${editedOffer.id}`, formData)
-            .then(response => {
-                setMessage({ type: 'success', content: response.data.message });
-                handleCloseModal(); // Close the modal and reset state
-                // Optionally: Reload the offers list or perform other actions
-            })
-            .catch(error => {
-                setMessage({ type: 'error', content: error.response.data.error });
-                // Handle error
-            });
+        post(`/admin/offers/edit/${selectedOffer.id}`, {
+            data: formData12,
+            onSuccess: () => {
+                reset();
+                document.getElementById('closeBtn').click();
+            },
+            onError: (error) => {
+                console.error('Error:', error.response);
+                if (error.response && error.response.data) {
+                    setMessage({ type: 'error', content: error.response.data.message || 'An error occurred' });
+                }
+            },
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     };
+
+    const handleDeleteOffer = () => {
+        if (selectedOffer) {
+            axios.post(`/admin/offers/delete/${selectedOffer.id}`)
+                .then(response => {
+                    setMessage({ type: 'success', content: response.data.message });
+                    setTimeout(() => {
+                        Inertia.visit(route('adminoffers'));
+                    }, 2000);
+                })
+                .catch(error => {
+                    setMessage({ type: 'error', content: error.response.data.error });
+                });
+        }
+    };
+    
 
     return (
         <>
@@ -220,6 +244,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                                     name="description"
                                                     value={data.description}
                                                     onChange={(e) => setData('description', e.target.value)}
+                                                    style={{ height: '150px', width: '100%' }}
                                                 ></textarea>
                                                 <label htmlFor="description">Offer Description</label>
                                                 {errors.description && <div className="text-danger">{errors.description}</div>}
@@ -303,7 +328,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                             className="form-control"
                                             id="etitle"
                                             placeholder="Offer Title"
-                                            name='title'
+                                            name='etitle'
                                             value={editedOffer.title}
                                             onChange={handleOfferInputChange}
                                         />
@@ -320,7 +345,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                             className="form-control"
                                             type="file"
                                             id="eimg"
-                                            name='img'
+                                            name='eimg'
                                             onChange={(e) => seteditedOffer(prev => ({ ...prev, img: e.target.files[0] }))}
                                         />
                                     </div>
@@ -330,7 +355,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                             type="date"
                                             className="form-control"
                                             id="evalid_from"
-                                            name="valid_from"
+                                            name="evalid_from"
                                             value={editedOffer.valid_from}
                                             onChange={handleOfferInputChange}
                                         />
@@ -342,7 +367,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                             type="date"
                                             className="form-control"
                                             id="evalid_till"
-                                            name="valid_till"
+                                            name="evalid_till"
                                             value={editedOffer.valid_till}
                                             onChange={handleOfferInputChange}
                                         />
@@ -354,7 +379,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                             type="number"
                                             className="form-control"
                                             id="eprice"
-                                            name="price"
+                                            name="eprice"
                                             placeholder='Price'
                                             value={editedOffer.price}
                                             onChange={handleOfferInputChange}
@@ -367,16 +392,23 @@ export default function Offers({ auth, offers, offersExist }) {
                                             className="form-control"
                                             placeholder="Offer Description"
                                             id="edescription"
-                                            name="description"
+                                            name="edescription"
                                             value={editedOffer.description}
                                             onChange={handleOfferInputChange}
+                                            style={{ height: '150px', width: '100%' }}
                                         ></textarea>
                                         <label htmlFor="edescription">Offer Description</label>
                                     </div>
                                 </div>
                             )}
+                            {message && (
+                                <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-danger'}`}>
+                                    {message.content}
+                                </div>
+                            )}
                         </div>
                         <div className="modal-footer">
+                            <button type="button" className="btn btn-danger" onClick={handleDeleteOffer}>Delete Offer</button>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCloseModal}>Close</button>
                             <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save changes</button>
                         </div>

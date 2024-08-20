@@ -22,13 +22,15 @@ Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['au
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'] )->name('adminDashboard');
     Route::get('/admin/user-manage', [AdminController::class, 'user_manage'] )->name('adminusers');
-    Route::post('/updateUserRole/{userId}', [AdminController::class, 'updateUserRole']);
+    Route::post('/admin/updateUserRole/{userId}', [AdminController::class, 'updateUserRole']);
     Route::get('/admin/settings', [AdminController::class, 'settings'])->name('adminsettings');
     Route::get('/admin/products', [AdminController::class, 'products'])->name('adminproducts');
     Route::get('/admin/add-new-product', [AdminController::class, 'addNewProduct'])->name('adminaddProduct');
     Route::get('/admin/offers', [AdminController::class, 'offers'])->name('adminoffers');
     Route::post('/admin/add-new-offer', [AdminController::class, 'adminAddoffer'])->name('adminAddoffer');
-    Route::post('/admin/edit-offer', [AdminController::class, 'editoffer'])->name('editOffer');
+    Route::post('/admin/offers/edit/{offerId}', [AdminController::class, 'Admineditoffer'])->name('admineditoffer');
+    Route::post('/admin/offers/delete/{offerId}', [AdminController::class, 'deleteoffer'])->name('admindeleteoffer');
+    Route::post('/admin/product/quick-action', [AdminController::class, 'quickAction'])->name('quickAction');
 });
 
 Route::middleware('auth')->group(function () {

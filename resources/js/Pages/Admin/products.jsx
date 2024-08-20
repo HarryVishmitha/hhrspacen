@@ -2,6 +2,8 @@ import { Link, Head } from '@inertiajs/react';
 import Adminnav from "../../Layouts/navs/adminnav";
 import AdminSidebar from '../../Layouts/navs/AdminSidebar';
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function products({ auth, nav, products}) {
 
@@ -22,6 +24,25 @@ export default function products({ auth, nav, products}) {
         setNewStatus('');
         setMessage(null);
     };
+
+    const handleSaveChanges = async () => {
+        if (selectedProduct) {
+            try {
+                const response = await axios.post('/admin/product/quick-action', {
+                    id: selectedProduct.id,
+                    published: newStatus,
+                });
+
+                setMessage({ type: 'success', content: "Successfull!" });
+                setTimeout(() => {
+                    Inertia.visit(route('adminproducts'));
+                }, 1500);
+            } catch (error) {
+                setMessage({ type: 'error', content: error.response.data.error });
+            }
+        }
+    };
+
     return(
         <>
             <Head title='Products'/>
@@ -78,11 +99,11 @@ export default function products({ auth, nav, products}) {
                     </div>
                 </div>
                 {/* Quick Action  */}
-                <div className="modal fade" id="quickEdit" tabIndex="-1" aria-labelledby="quick Edit of products" aria-hidden="true">
+                <div className="modal fade" id="quickEdit" aria-labelledby="quick Edit of products" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Quick Action</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
@@ -90,18 +111,23 @@ export default function products({ auth, nav, products}) {
                                 <div>
                                     <p><strong>Name:</strong> {selectedProduct.name}</p>
                                     <div className="mb-3 form-floating">
-                                        <select class="form-select" id="status" aria-label="Status of product" value={newStatus} onChange={handleStatusChange}>
+                                        <select className="form-select" id="status" aria-label="Status of product" value={newStatus} onChange={handleStatusChange}>
                                             <option value='1'>Published</option>
                                             <option value="0">Not-Published</option>
                                         </select>
-                                        <label for="status">Works with selects</label>
+                                        <label htmlFor="status">Works with selects</label>
                                     </div>
+                                </div>
+                            )}
+                            {message && (
+                                <div className={`alert alert-${message.type} mt-3`} role="alert">
+                                    {message.content}
                                 </div>
                             )}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
+                            <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save changes</button>
                         </div>
                         </div>
                     </div>

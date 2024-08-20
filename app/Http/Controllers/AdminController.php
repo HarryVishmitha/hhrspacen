@@ -187,7 +187,95 @@ class AdminController extends Controller
         }
     }
     
-    public function editoffer(Request $request, $offerId) {
-        
+    public function Admineditoffer(Request $request, $offerId) {
+        $role = Auth::user()->role;
+    
+        if ($role === 'admin') {
+            // Validate the request
+            $validatedData = $request->validate([
+                'etitle' => ['required', 'string', 'max:255'],
+                'eimg' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif'],
+                'evalid_from' => ['required', 'date'],
+                'evalid_till' => ['required', 'date', 'after_or_equal:evalid_from'],
+                'edescription' => ['required', 'string'],
+                'eprice' => ['required', 'numeric', 'min:0'],
+            ]);
+    
+            // Find the offer
+            $offer = Offer::findOrFail($offerId);
+    
+            if ($request->hasFile('eimg')) {
+                // Delete the old image if it exists
+                if ($offer->img) {
+                    $oldImagePath = public_path($offer->img);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+    
+                // Upload new image
+                $image = $request->file('eimg');
+                $uniqueName = hash('sha256', now()->timestamp . $image->getClientOriginalName()) . '.' . $image->extension();
+                $image->move(public_path('upload/offers'), $uniqueName);
+                $offer->img = '/upload/offers/' . $uniqueName;
+            }
+    
+            // Update the offer details
+            $offer->title = $validatedData['etitle'];
+            $offer->from_date = $validatedData['evalid_from'];
+            $offer->end_date = $validatedData['evalid_till'];
+            $offer->description = $validatedData['edescription'];
+            $offer->price = $validatedData['eprice'];
+            $offer->save();
+    
+            // Redirect or return a success response
+            return response()->json(['message' => 'Offer updated successfully']);
+        } else {
+            return response()->json(['error' => 'Permission denied'], 403);
+        }
+    }
+    
+    
+
+    public function deleteoffer(Request $request, $offerId) {
+        $role = Auth::user()->role;
+
+        if ($role === 'admin') {
+            // Find the offer
+            $offer = Offer::findOrFail($offerId);
+
+            // Delete the image if it exists
+            if ($offer->img) {
+                $imagePath = public_path($offer->img);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+
+            // Delete the offer
+            $offer->delete();
+
+            // Redirect or return a success response
+            return redirect()->route('adminoffers')->with('success', 'Offer deleted successfully!');
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+
+    public function quickAction(Request $request) {
+        $role = Auth::user()->role;
+
+        if ($role === 'admin') {
+            $product = Product::find($request->id);
+            if ($product) {
+                $product->published = $request->published;
+                $product->save();
+                return response()->json(['message' => 'Product status updated successfully.']);
+            } else {
+                return response()->json(['message' => 'Product not found.'], 404);
+            }
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
     }
 }
