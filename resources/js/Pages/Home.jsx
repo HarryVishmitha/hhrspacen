@@ -93,7 +93,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                     <div className="container d-flex justify-content-center align-items-center mb-5 row">
                         {validOffers.map((offers) => (
                         <div key={offers.id} className="card position-relative text-center p-4 shadow me-lg-5 me-sm-0 me-md-5 col-auto mb-5 mt-4">
-                            <img src={offers.img} className="card-img-top" alt="Offer Image"/>
+                            <img src={offers.img} className="card-img-top" alt="Offer Image" />
                             <h2 className="text-decoration-underline be-vietnam-pro-semibold printair-red">
                                 {offers.title}
                             </h2>
@@ -115,8 +115,8 @@ export default function Home({ auth, offers, offersExist, products }) {
                                 </svg>
                             </div>
                             <div className="badge-inner position-absolute">
-                                <div className="small-word">Only Rs.</div>
-                                <div className="price">{offers.price}</div>
+                                <div className="small-word">Discount</div>
+                                <div className="price">{offers.price}%</div>
                             </div>
                             T&C apply.
                         </div>

@@ -134,7 +134,7 @@ export default function Offers({ auth, offers, offersExist }) {
         if (selectedOffer) {
             axios.post(`/admin/offers/delete/${selectedOffer.id}`)
                 .then(response => {
-                    setMessage({ type: 'success', content: response.data.message });
+                    setMessage({ type: 'success', content: 'successfully deleted!' });
                     setTimeout(() => {
                         Inertia.visit(route('adminoffers'));
                     }, 2000);
@@ -144,7 +144,7 @@ export default function Offers({ auth, offers, offersExist }) {
                 });
         }
     };
-    
+
 
     return (
         <>
@@ -232,7 +232,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                                     value={data.price}
                                                     onChange={(e) => setData('price', e.target.value)}
                                                 />
-                                                <label htmlFor="price">Price</label>
+                                                <label htmlFor="price">Discount</label>
                                                 {errors.price && <div className="text-danger">{errors.price}</div>}
                                             </div>
 
@@ -384,7 +384,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                             value={editedOffer.price}
                                             onChange={handleOfferInputChange}
                                         />
-                                        <label htmlFor="eprice">Price</label>
+                                        <label htmlFor="eprice">Discount</label>
                                     </div>
 
                                     <div className="form-floating mb-3">
@@ -410,7 +410,7 @@ export default function Offers({ auth, offers, offersExist }) {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger" onClick={handleDeleteOffer}>Delete Offer</button>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCloseModal}>Close</button>
-                            <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save changes</button>
+                            <button type="button" className="btn btn-primary" onClick={handleSaveChanges} disabled>Save changes</button>
                         </div>
                     </div>
                 </div>

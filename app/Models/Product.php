@@ -11,7 +11,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'simple_description', 'description', 'published', 'template_type', 'vearients'
+        'name', 'simple_description', 'description', 'published', 'template_type', 'vearients', 'links',
     ];
 
     public function priceLists()

@@ -82,7 +82,10 @@ class AdminController extends Controller
     public function settings() {
         $role = Auth::user()->role;
         if ($role === 'admin') {
-            return Inertia::render('Admin/settings');
+            $app_version = env('App_version');
+            return Inertia::render('Admin/settings', [
+                'app_version' => $app_version,
+            ]);
         } else {
             return Inertia::render('errors/permitiondenied');
         }
@@ -151,7 +154,7 @@ class AdminController extends Controller
     }
     public function adminAddoffer(Request $request) {
         $role = Auth::user()->role;
-    
+
         if ($role === 'admin') {
             // Validate the request
             $validatedData = $request->validate([
@@ -160,15 +163,15 @@ class AdminController extends Controller
                 'valid_from' => ['required', 'date'],
                 'valid_till' => ['required', 'date', 'after_or_equal:valid_from'],
                 'description' => ['required', 'string'],
-                'price' => ['required', 'numeric', 'min:0'],
+                'price' => ['required', 'numeric', 'min:0', 'max:100'],
             ]);
-    
+
             // Upload image
             $image = $request->file('img');
             $uniqueName = hash('sha256', now()->timestamp . $image->getClientOriginalName()) . '.' . $image->extension();
             $image->move(public_path('upload/offers'), $uniqueName);
             $imagePath = '/upload/offers/' . $uniqueName;
-    
+
             // Create a new offer
             Offer::create([
                 'title' => $validatedData['title'],
@@ -178,7 +181,7 @@ class AdminController extends Controller
                 'price' => $validatedData['price'],
                 'img' => $imagePath,
             ]);
-    
+
             // Redirect or return a success response
             return redirect()->route('adminoffers')->with('success', 'Offer added successfully!');
         } else {
@@ -186,10 +189,10 @@ class AdminController extends Controller
             return Inertia::render('errors/permitiondenied');
         }
     }
-    
+
     public function Admineditoffer(Request $request, $offerId) {
         $role = Auth::user()->role;
-    
+
         if ($role === 'admin') {
             // Validate the request
             $validatedData = $request->validate([
@@ -200,10 +203,10 @@ class AdminController extends Controller
                 'edescription' => ['required', 'string'],
                 'eprice' => ['required', 'numeric', 'min:0'],
             ]);
-    
+
             // Find the offer
             $offer = Offer::findOrFail($offerId);
-    
+
             if ($request->hasFile('eimg')) {
                 // Delete the old image if it exists
                 if ($offer->img) {
@@ -212,14 +215,14 @@ class AdminController extends Controller
                         unlink($oldImagePath);
                     }
                 }
-    
+
                 // Upload new image
                 $image = $request->file('eimg');
                 $uniqueName = hash('sha256', now()->timestamp . $image->getClientOriginalName()) . '.' . $image->extension();
                 $image->move(public_path('upload/offers'), $uniqueName);
                 $offer->img = '/upload/offers/' . $uniqueName;
             }
-    
+
             // Update the offer details
             $offer->title = $validatedData['etitle'];
             $offer->from_date = $validatedData['evalid_from'];
@@ -227,15 +230,15 @@ class AdminController extends Controller
             $offer->description = $validatedData['edescription'];
             $offer->price = $validatedData['eprice'];
             $offer->save();
-    
+
             // Redirect or return a success response
             return response()->json(['message' => 'Offer updated successfully']);
         } else {
             return response()->json(['error' => 'Permission denied'], 403);
         }
     }
-    
-    
+
+
 
     public function deleteoffer(Request $request, $offerId) {
         $role = Auth::user()->role;

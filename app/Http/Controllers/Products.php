@@ -16,6 +16,8 @@ class Products extends Controller
     public function index() {
         $products = Product::with('priceLists')->where('published', true)->get();
         $productsWithPrices = $products->map(function($product) {
+            // Decode the JSON string to an array
+            $links = json_decode($product->links, true);
             return [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -29,7 +31,9 @@ class Products extends Controller
                         'price' => $priceList->price,
                         'updated_on' => $priceList->updated_on,
                     ];
-                })
+                }),
+                'links' => $links['image_paths'] ?? [],
+                'first_img' => $links['image_paths'][0],
             ];
         });
 
