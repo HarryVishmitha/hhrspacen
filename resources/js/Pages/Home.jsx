@@ -152,7 +152,7 @@ export default function Home({ auth, offers, offersExist, products }) {
                                                  'Introducing our collection of personalized printed mugs, designed to add a special touch to your everyday moments and celebrations. Whether you\'re looking for the perfect birthday gift, a thoughtful present for a loved one, or a unique promotional item for your business, our mugs are the ideal choice. Each mug can be customized according to your specific needs, allowing you to add your own designs, messages, or photos. Made from high-quality materials, our printed mugs are both durable and stylish, ensuring that your personalized creation will be cherished for years to come. Make every sip special with our one-of-a-kind printed mugs!'
                                                 }
                                             </p>
-                                            <Link href={route(`products.${product.id === 1 ? 'x-banners' : product.id === 2 ? 'pull-ups' : 'mugs'}`)}>
+                                            <Link href={`${product.id === 1 ? '/products/1/x-banner' : product.id === 2 ? '/products/2/pull-ups' : '/products/3/mugs'}`}>
                                                 <div className="btn btn-outline-light">Order now <i className="fa-solid fa-arrow-right"></i></div>
                                             </Link>
                                         </div>

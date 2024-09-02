@@ -14,9 +14,10 @@ Route::get('/', [Home::class, 'index'])->name('home');
 Route::get('/about-us', [Home::class, 'about_us'])->name('about_us');
 Route::group([], function () {
     Route::get('/products', [Products::class, 'index'])->name('products');
-    Route::get('/products/x-banners', [Products::class, 'xbanners'])->name('products.x-banners');
-    Route::get('/products/pull-ups', [Products::class, 'pullups'])->name('products.pull-ups');
-    Route::get('/products/mugs', [Products::class, 'mugs'])->name('products.mugs');
+    // Route::get('/products/1/x-banners', [Products::class, 'show'])->name('products.x-banners');
+    // Route::get('/products/2/pull-ups', [Products::class, 'show'])->name('products.pull-ups');
+    // Route::get('/products/3/mugs', [Products::class, 'show'])->name('products.mugs');
+    Route::get('/products/{productId}/{productName}', [Products::class, 'show']);
 });
 Route::get('user/dashboard', [UserController::class, 'index'] )->middleware(['auth', 'verified', 'user'])->name('dashboard');
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {

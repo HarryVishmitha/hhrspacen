@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,12 @@ use App\Models\PriceList;
 class Products extends Controller
 {
     public function index() {
-        $products = Product::with('priceLists')->where('published', true)->get();
-        $productsWithPrices = $products->map(function($product) {
-            // Decode the JSON string to an array
-            $links = json_decode($product->links, true);
+        // Fetch products with associated categories, price lists, and variants
+        $products = Product::with(['category', 'priceLists', 'variants'])
+            ->where('published', true)
+            ->get();
+
+        $productsWithDetails = $products->map(function($product) {
             return [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -25,15 +28,25 @@ class Products extends Controller
                 'description' => $product->description,
                 'published' => $product->published,
                 'template_type' => $product->template_type,
-                'vearients' => $product->vearients,
+                'category' => $product->category ? $product->category->name : 'Uncategorized',
+                'variants' => $product->variants->map(function($variant) {
+                    return [
+                        'variant_type' => $variant->variant_type,
+                        'variant_value' => $variant->variant_value,
+                        'price' => $variant->price,
+                        'stock' => $variant->stock,
+                    ];
+                }),
                 'prices' => $product->priceLists->map(function($priceList) {
                     return [
                         'price' => $priceList->price,
                         'updated_on' => $priceList->updated_on,
                     ];
                 }),
-                'links' => $links['image_paths'] ?? [],
-                'first_img' => $links['image_paths'][0],
+                'links' => json_decode($product->links, true)['image_paths'] ?? [],
+                'first_img' => !empty(json_decode($product->links, true)['image_paths'][0]) ? 
+                               json_decode($product->links, true)['image_paths'][0] : 
+                               "/upload/products/default-product-01.jpg",
             ];
         });
 
@@ -47,7 +60,44 @@ class Products extends Controller
             'phpVersion' => PHP_VERSION,
             'offers' => $offers,
             'offersExist' => $offersExist,
-            'products' => $productsWithPrices,
+            'products' => $productsWithDetails,
+        ]);
+    }
+
+    public function show($productId, $productName) {
+        $product = Product::with(['category', 'priceLists', 'variants'])->findOrFail($productId);
+
+        $links = json_decode($product->links, true);
+        $first_image = !empty($links['image_paths'][0]) ? $links['image_paths'][0] : "/upload/products/default-product-01.jpg";
+
+        $productData = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'simple_description' => $product->simple_description,
+            'description' => $product->description,
+            'published' => $product->published,
+            'template_type' => $product->template_type,
+            'category' => $product->category ? $product->category->name : 'Uncategorized',
+            'variants' => $product->variants->map(function($variant) {
+                return [
+                    'variant_type' => $variant->variant_type,
+                    'variant_value' => $variant->variant_value,
+                    'price' => $variant->price,
+                    'stock' => $variant->stock,
+                ];
+            }),
+            'prices' => $product->priceLists->map(function($priceList) {
+                return [
+                    'price' => $priceList->price,
+                    'updated_on' => $priceList->updated_on,
+                ];
+            }),
+            'links' => $links['image_paths'] ?? [],
+            'first_img' => $first_image,
+        ];
+
+        return Inertia::render('Products/productDetail', [
+            'product' => $productData,
         ]);
     }
 

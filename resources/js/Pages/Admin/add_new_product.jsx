@@ -67,6 +67,7 @@ export default function AddNewProduct({ auth, nav }) {
                                     rows="5"
                                     value={data.product_description}
                                     onChange={e => setData('product_description', e.target.value)}
+                                    style={{ minHeight: '150px'}}
                                 ></textarea>
                                 <label htmlFor="product_description">Product Description</label>
                                 {errors.product_description && <div className="text-danger">{errors.product_description}</div>}
