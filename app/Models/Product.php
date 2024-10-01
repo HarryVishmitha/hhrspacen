@@ -46,7 +46,7 @@ class Product extends Model
         'category_id',
         'links',
     ];
-    
+
     public function category()
     {
         return $this->belongsTo(Category::class);

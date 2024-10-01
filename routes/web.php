@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::post('/admin/offers/edit/{offerId}', [AdminController::class, 'Admineditoffer'])->name('admineditoffer');
     Route::post('/admin/offers/delete/{offerId}', [AdminController::class, 'deleteoffer'])->name('admindeleteoffer');
     Route::post('/admin/product/quick-action', [AdminController::class, 'quickAction'])->name('quickAction');
+    Route::get('/admin/categories', [AdminController::class, 'categories'])->name('adminCategories');
 });
 
 Route::middleware('auth')->group(function () {

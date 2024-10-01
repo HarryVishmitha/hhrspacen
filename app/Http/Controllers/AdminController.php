@@ -281,4 +281,14 @@ class AdminController extends Controller
             return Inertia::render('errors/permitiondenied');
         }
     }
+
+    public function categories() {
+        $role = Auth::user()->role;
+
+        if ($role === 'admin') {
+            return Inertia::render('categories');
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
 }

@@ -44,8 +44,8 @@ class Products extends Controller
                     ];
                 }),
                 'links' => json_decode($product->links, true)['image_paths'] ?? [],
-                'first_img' => !empty(json_decode($product->links, true)['image_paths'][0]) ? 
-                               json_decode($product->links, true)['image_paths'][0] : 
+                'first_img' => !empty(json_decode($product->links, true)['image_paths'][0]) ?
+                               json_decode($product->links, true)['image_paths'][0] :
                                "/upload/products/default-product-01.jpg",
             ];
         });
@@ -92,6 +92,7 @@ class Products extends Controller
                     'updated_on' => $priceList->updated_on,
                 ];
             }),
+
             'links' => $links['image_paths'] ?? [],
             'first_img' => $first_image,
         ];

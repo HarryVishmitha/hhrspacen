@@ -296,3 +296,104 @@ body{
   background-color: rgb(255, 58, 58);
   color: rgb(255, 255, 255);
 }
+
+
+
+.productImageSlide img {
+    width: 100%; /* Make sure the image fits the container */
+    border-radius: 10px;
+}
+
+/* Show the active slide */
+.activeSlide {
+    display: block !important; /* Only display the active slide */
+}
+
+/* Number text (e.g., 1/3) */
+.numberText {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+    display: none;
+}
+
+/* Container for the caption */
+.caption-container {
+    text-align: center;
+    background-color: #222;
+    padding: 2px 16px;
+    color: white;
+    display: none;
+}
+
+/* Thumbnail images */
+.demo {
+    opacity: 0.6;
+    width: 100%; /* Adjust width as needed */
+    cursor: pointer;
+}
+
+.demo.active,
+.demo:hover {
+    opacity: 1;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev {
+  left: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+/* .rowt:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  /* Six columns side by side */
+  /* .column {
+    float: left;
+    width: 16.66%;
+  } */
+.rowt:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.column {
+    float: left;
+    width: 16.66%;
+}
+#productPrice {
+    font-size: 35px;
+    color: #ef4538;
+}
