@@ -32,7 +32,7 @@ export default function AdminSidebar({ user }) {
                             </li>
                             <li className="nav-item">
                                 <Link href={route('adminCategories')} className="nav-link link-dark-hoverable">
-                                <i class="fa-solid fa-list"></i> Categories
+                                <i className="fa-solid fa-list"></i> Categories
                                 </Link>
                             </li>
                             <li className="nav-item">

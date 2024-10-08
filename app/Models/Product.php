@@ -47,9 +47,10 @@ class Product extends Model
         'links',
     ];
 
-    public function category()
+    // A product can belong to many categories
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'category_product');
     }
 
 

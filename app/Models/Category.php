@@ -12,9 +12,9 @@ class Category extends Model
 
     protected $fillable = ['name', 'description'];
 
-    // A category can have many products
+    // A category can belong to many products
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class, 'category_product');
     }
 }

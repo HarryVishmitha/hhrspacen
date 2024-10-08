@@ -159,7 +159,7 @@ export default function Offers({ auth, offers, offersExist }) {
                         <button type="button" className="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#addnewOffer">
                             Add New Offer
                         </button>
-
+                        <hr />
                         {/* Add New Offer Modal */}
                         <div className="modal fade" id="addnewOffer" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div className="modal-dialog">
@@ -169,6 +169,7 @@ export default function Offers({ auth, offers, offersExist }) {
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" id='closeBtn'></button>
                                     </div>
                                     <div className="modal-body">
+                                        <div className="alert alert-danger">එකපාරින්ම offer එක add කරන්න. Edit කරන්න බැහැ.</div>
                                         <form onSubmit={handleSubmit}>
                                             <div className="form-floating mb-3">
                                                 <input

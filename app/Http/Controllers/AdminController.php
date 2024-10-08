@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Offer;
 use Carbon\Carbon;
 use App\Models\Product;
+use App\Models\Category;
 
 class AdminController extends Controller
 {
@@ -284,9 +285,15 @@ class AdminController extends Controller
 
     public function categories() {
         $role = Auth::user()->role;
-
+        // Fetch all categories
+        $categories = Category::all();
+        $categoriesExist = $categories->isNotEmpty();
         if ($role === 'admin') {
-            return Inertia::render('categories');
+            return Inertia::render('Admin/categories',
+        [
+            'categories' => $categories,
+            'categoriesExist' => $categoriesExist,
+        ]);
         } else {
             return Inertia::render('errors/permitiondenied');
         }
