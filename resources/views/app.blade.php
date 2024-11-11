@@ -10,7 +10,26 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/9d3f75581e.js" crossorigin="anonymous"></script>
         <title inertia>{{ config('app.name', 'HHRSPACE') }}</title>
-
+        <style>
+            .back-to-top {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                display: none; /* Hidden by default */
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 15px;
+                font-size: 16px;
+                z-index: 1000;
+                width: 50px;
+                height: 50px;
+            }
+            .back-to-top:hover {
+                background-color: #0056b3;
+            }
+        </style>
         <!-- Scripts -->
         @routes
         @viteReactRefresh
@@ -19,5 +38,27 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+
+        <!-- Back to Top Button -->
+        <button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></button>
+
+        <script>
+            $(document).ready(function() {
+                // Show or hide the button based on scroll position
+                $(window).scroll(function() {
+                    if ($(this).scrollTop() > 100) {
+                        $('#backToTop').fadeIn();
+                    } else {
+                        $('#backToTop').fadeOut();
+                    }
+                });
+
+                // Scroll to top when the button is clicked
+                $('#backToTop').click(function() {
+                    $('html, body').animate({ scrollTop: 0 }, 800);
+                    return false;
+                });
+            });
+        </script>
     </body>
 </html>

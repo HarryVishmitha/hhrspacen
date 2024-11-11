@@ -22,7 +22,7 @@ export default function NavLayout1() {
                                 Products
                             </Link>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link href={ route('home')} className="nav-link">
                                 Design Services
                             </Link>
@@ -41,7 +41,7 @@ export default function NavLayout1() {
                             <Link href={ route('home')} className="nav-link">
                                 Contact Us
                             </Link>
-                        </li>
+                        </li> */}
                         <li className="nav-item">
                             <Link href={ route('dashboard')} className="nav-link">
                                 My account

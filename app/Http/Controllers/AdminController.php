@@ -14,8 +14,9 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-
+        
     }
+
     public function index(Request $request) {
         $role = Auth::user()->role;
         if ($role === 'manager') {
@@ -298,4 +299,89 @@ class AdminController extends Controller
             return Inertia::render('errors/permitiondenied');
         }
     }
+
+    public function add_cat(Request $request) {
+        $role = Auth::user()->role;
+
+        if ($role === 'admin') {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['nullable', 'string'],
+            ]);
+            $validatedData['name'];
+            $validatedData['description'];
+            try {
+                // Create a new category
+                Category::create([
+                    'name' => $validatedData['name'],
+                    'description' => $validatedData['description'],
+                    'created_at' => Carbon::now()->timestamp,
+                ]);
+
+            }
+            catch (\Exception $e) {
+                // Catch any error and send it to the frontend
+                return redirect()->back()->withErrors(['error' => 'Failed to add category: ' . $e->getMessage()]);
+            }
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+
+    public function delete_cat(Request $request, $CatId) {
+        $role = Auth::user()->role;
+    
+        if ($role === 'admin') {
+            $Cat = Category::findOrFail($CatId);
+            $Cat->delete();
+            return redirect()->route('adminCategories')->with('success', 'Category deleted successfully!');
+            // try {
+            //     // Find the category
+            //     $Cat = Category::findOrFail($CatId);
+            //     $Cat->delete();
+            //     return redirect()->route('categories.index')->with('success', 'Category deleted successfully!'); // Redirect after deletion
+            // } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            //     return redirect()->route('categories.index')->withErrors(['error' => 'Category not found.']); // Specific error for not found
+            // } catch (\Exception $e) {
+            //     return redirect()->route('categories.index')->withErrors(['error' => 'Failed to delete category: ' . $e->getMessage()]); // General error
+            // }
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+    
+    public function update_cat(Request $request, $CatId) {
+        $role = Auth::user()->role;
+    
+        if ($role === 'admin') {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['nullable', 'string'],
+            ]);
+    
+            try {
+                // Find the category by ID
+                $category = Category::findOrFail($CatId);
+    
+                // Update the category with validated data
+                $category->update([
+                    'name' => $validatedData['name'],
+                    'description' => $validatedData['description'],
+                    'updated_at' => Carbon::now()->timestamp, // Update timestamp
+                ]);
+    
+                // Return success response (you can customize this)
+                return redirect()->back()->with('success', 'Category updated successfully!');
+            } catch (\Exception $e) {
+                // Catch any error and send it to the frontend
+                return redirect()->back()->withErrors(['error' => 'Failed to update category: ' . $e->getMessage()]);
+            }
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+    
+
 }

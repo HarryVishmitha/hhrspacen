@@ -33,6 +33,9 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::post('/admin/offers/delete/{offerId}', [AdminController::class, 'deleteoffer'])->name('admindeleteoffer');
     Route::post('/admin/product/quick-action', [AdminController::class, 'quickAction'])->name('quickAction');
     Route::get('/admin/categories', [AdminController::class, 'categories'])->name('adminCategories');
+    Route::post('/admin/add-new-category', [AdminController::class, 'add_cat'])->name('adminaddCat');
+    Route::post('/admin/delete-categories/{CatId}', [AdminController::class, 'delete_cat']);
+    Route::post('/admin/update-cat/{CatId}', [AdminController::class, 'update_cat']);
 });
 
 Route::middleware('auth')->group(function () {

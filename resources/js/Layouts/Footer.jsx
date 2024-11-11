@@ -33,14 +33,17 @@ export default function Footer() {
                 <ul className="nav flex-column">
                     <li className="nav-item mb-2"><Link href={route('home')} className="nav-link p-0">Home</Link></li>
                     <li className="nav-item mb-2"><Link href={route('products')} className="nav-link p-0">Products</Link></li>
-                    <li className="nav-item mb-2"><Link href={route('products')} className="nav-link p-0">Design services</Link></li>
+                    {/* <li className="nav-item mb-2"><Link href={route('products')} className="nav-link p-0">Design services</Link></li>
                     <li className="nav-item mb-2"><Link href="#" className="nav-link p-0">Price list</Link></li>
-                    <li className="nav-item mb-2"><Link href="#" className="nav-link p-0">FAQs</Link></li>
+                    <li className="nav-item mb-2"><Link href="#" className="nav-link p-0">FAQs</Link></li> */}
                     <li className="nav-item mb-2"><Link href={route('about_us')} className="nav-link p-0">About</Link></li>
-                    <li className="nav-item mb-2"><Link href="#" className="nav-link p-0">Sitemap</Link></li>
+                    {/* <li className="nav-item mb-2"><Link href="#" className="nav-link p-0">Sitemap</Link></li> */}
                 </ul>
             </div>
-            <div className="copyright border-top w-100">All Right Reserved &copy; {currentYear}</div>
+            <div className="d-flex w-100">
+                <div className="copyright border-top w-100">All Right Reserved &copy; {currentYear}</div>
+                
+            </div>
         </footer>
         </div>
     );
