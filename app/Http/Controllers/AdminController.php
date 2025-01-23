@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function index(Request $request) {
@@ -129,12 +129,17 @@ class AdminController extends Controller
     }
     public function addNewProduct() {
         $role = Auth::user()->role;
+        // Fetch all categories
+        $categories = Category::all();
+        $categoriesExist = $categories->isNotEmpty();
         if ($role === 'admin') {
             return Inertia::render('Admin/add_new_product', [
                 'nav' => [
                     'back' => "adminproducts",
                     'title' => "Add New Product",
                 ],
+                'categories' => $categories,
+                'categoriesExist' => $categoriesExist,
             ]);
         } else {
             return Inertia::render('errors/permitiondenied');
@@ -331,7 +336,7 @@ class AdminController extends Controller
 
     public function delete_cat(Request $request, $CatId) {
         $role = Auth::user()->role;
-    
+
         if ($role === 'admin') {
             $Cat = Category::findOrFail($CatId);
             $Cat->delete();
@@ -350,28 +355,28 @@ class AdminController extends Controller
             return Inertia::render('errors/permitiondenied');
         }
     }
-    
+
     public function update_cat(Request $request, $CatId) {
         $role = Auth::user()->role;
-    
+
         if ($role === 'admin') {
             // Validate the request data
             $validatedData = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'description' => ['nullable', 'string'],
             ]);
-    
+
             try {
                 // Find the category by ID
                 $category = Category::findOrFail($CatId);
-    
+
                 // Update the category with validated data
                 $category->update([
                     'name' => $validatedData['name'],
                     'description' => $validatedData['description'],
                     'updated_at' => Carbon::now()->timestamp, // Update timestamp
                 ]);
-    
+
                 // Return success response (you can customize this)
                 return redirect()->back()->with('success', 'Category updated successfully!');
             } catch (\Exception $e) {
@@ -382,6 +387,6 @@ class AdminController extends Controller
             return Inertia::render('errors/permitiondenied');
         }
     }
-    
+
 
 }

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link, Head, useForm } from '@inertiajs/react';
 import Adminnav from "../../Layouts/navs/adminnav";
 import Backablenav from '../../Layouts/navs/backable';
+import Select from 'react-select';
 
-export default function AddNewProduct({ auth, nav }) {
+export default function AddNewProduct({ auth, nav, categories, categoriesExist }) {
     const { data, setData, post, processing, errors } = useForm({
         product_name: '',
         pSimple_description: '',
@@ -23,6 +24,12 @@ export default function AddNewProduct({ auth, nav }) {
         post('/products');
     };
 
+    // Convert categories array to options array
+    const Catoptions = categories.map(category => ({
+        value: category.id,
+        label: category.name
+    }));
+    const noOptionsMessage = () => "No more categories, go to categories and add more categories.";
     return (
         <>
             <Head title='Add New Product' />
@@ -84,16 +91,31 @@ export default function AddNewProduct({ auth, nav }) {
                                 <label htmlFor="price">Price</label>
                                 {errors.price && <div className="text-danger">{errors.price}</div>}
                             </div>
+                            <div className="mb-3">
+                                <label htmlFor="Catselect">Categories</label>
+                                <Select
+                                    isMulti
+                                    name="Categories"
+                                    options={Catoptions}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    closeMenuOnSelect={false}
+                                    id="Catselect"
+                                    isSearchable
+                                    noOptionsMessage={noOptionsMessage}
+                                />
+                            </div>
                             <div className="form-floating mb-3">
                                 <input
-                                    type="url"
-                                    className="form-control"
-                                    id="product_url"
-                                    placeholder="Product URL"
-                                    value={e => setData('product_url', e.target.value)}
+                                type="number"
+                                className="form-control"
+                                id="price"
+                                placeholder="Price"
+                                value={data.price}
+                                onChange={e => setData('price', e.target.value)}
                                 />
-                                <label htmlFor="product_url">Product URL</label>
-                                {errors.product_url && <div className="text-danger">{errors.product_url}</div>}
+                                <label htmlFor="price">Price</label>
+                                {errors.price && <div className="text-danger">{errors.price}</div>}
                             </div>
                             <div className="form-check mb-3">
                                 <input
