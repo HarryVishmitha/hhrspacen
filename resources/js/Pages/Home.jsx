@@ -51,11 +51,11 @@ export default function Home({ auth, offers, offersExist, products }) {
                         <div className="row">
                             <div className="col-sm-5 mt-3">
                                 <div className="be-vietnam-pro-black home-main-text">
-                                    Boost your Business with Customized Banners...
+                                    Boost your Business with Customized Roll-up Banners...
                                 </div>
                                 <p className="para be-vietnam-pro-regular">
                                     Classy, attractive, indoor banner stands are versatile and creative ways to get your message to the masses.
-                                    X stand banners and Roll up banners are a useful signage option to drive more traffic and clients your way.
+                                    Roll up banners are a useful signage option to drive more traffic and clients your way.
                                 </p>
                                 <Link href={route('products')}>
                                     <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{ fontSize: '20px' }}>Shop Now!</div>
@@ -71,11 +71,11 @@ export default function Home({ auth, offers, offersExist, products }) {
                         <div className="row">
                             <div className="col-sm-5 mt-3">
                                 <div className="be-vietnam-pro-black home-main-text">
-                                    Boost your Business with Customized Bannerhfgtytdftds...
+                                    Boost your Business with Customized X-Banners...
                                 </div>
                                 <p className="para be-vietnam-pro-regular">
                                     Classy, attractive, indoor banner stands are versatile and creative ways to get your message to the masses.
-                                    X stand banners and Roll up banners are a useful signage option to drive more traffic and clients your way.
+                                    X stand banners are a useful signage option to drive more traffic and clients your way.
                                 </p>
                                 <Link href={route('products')}>
                                     <div className="btn btn-outline-danger be-vietnam-pro-semibold" style={{ fontSize: '20px' }}>Shop Now!</div>

@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::post('/admin/add-new-category', [AdminController::class, 'add_cat'])->name('adminaddCat');
     Route::post('/admin/delete-categories/{CatId}', [AdminController::class, 'delete_cat']);
     Route::post('/admin/update-cat/{CatId}', [AdminController::class, 'update_cat']);
+    Route::post('/admin/api/add-Product', [AdminController::class, 'addNproduct'])->name('addProduct')->withoutMiddleware(['\App\Http\Middleware\SanitizeInput::class']);
 });
 
 Route::middleware('auth')->group(function () {

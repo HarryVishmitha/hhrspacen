@@ -127,6 +127,11 @@ export default function ProductDetails({ product }) {
                         </div>
                     </div>
                 </div>
+                <div className="description col mt-3" id='description'>
+                    <hr />
+                    <h2 className="text-2xl font-bold mb-2 be-vietnam-pro-bold mt-2">Description</h2>
+                    <div dangerouslySetInnerHTML={{ __html: product.description }} />
+                </div>
             </div>
             <Footer/>
         </>

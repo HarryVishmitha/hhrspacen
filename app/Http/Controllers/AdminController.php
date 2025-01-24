@@ -9,6 +9,9 @@ use App\Models\Offer;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class AdminController extends Controller
 {
@@ -307,8 +310,9 @@ class AdminController extends Controller
 
     public function add_cat(Request $request) {
         $role = Auth::user()->role;
-
         if ($role === 'admin') {
+            Log::info('Request Data: ' . json_encode($request->all()));
+
             // Validate the request data
             $validatedData = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -321,13 +325,13 @@ class AdminController extends Controller
                 Category::create([
                     'name' => $validatedData['name'],
                     'description' => $validatedData['description'],
-                    'created_at' => Carbon::now()->timestamp,
                 ]);
-
+                Log::info('Category added successfully');
             }
             catch (\Exception $e) {
                 // Catch any error and send it to the frontend
                 return redirect()->back()->withErrors(['error' => 'Failed to add category: ' . $e->getMessage()]);
+                Log::error('Failed to add category: ' . $e->getMessage());
             }
         } else {
             return Inertia::render('errors/permitiondenied');
@@ -374,7 +378,6 @@ class AdminController extends Controller
                 $category->update([
                     'name' => $validatedData['name'],
                     'description' => $validatedData['description'],
-                    'updated_at' => Carbon::now()->timestamp, // Update timestamp
                 ]);
 
                 // Return success response (you can customize this)
@@ -388,5 +391,85 @@ class AdminController extends Controller
         }
     }
 
+    public function addNproduct(Request $request)
+    {
+        $role = Auth::user()->role;
+        Log::info('Request Data: ' . json_encode($request->all()));
+        Log::info('Variants: ' . json_encode($request->variants));
+        Log::info('Categories: ' . json_encode($request->categories));
+        $categories = json_decode($request->categories, true);
+        $variants = json_decode($request->variants, true);
+
+        if ($role === 'admin') {
+            $validated = $request->validate([
+                'product_name' => 'required|string|max:255',
+                'pSimple_description' => 'required|string',
+                'product_description' => 'required',
+                'price' => 'required|numeric',
+                'product_images' => 'required|array',
+                'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:12048',
+                'published' => 'nullable|boolean',
+            ]);
+
+            Log::info('Validated Data: ' . json_encode($validated));
+
+            DB::beginTransaction();
+
+            try {
+                $imagePaths = [];
+                if ($request->hasFile('product_images')) {
+                    foreach ($request->file('product_images') as $image) {
+                        $uniqueName = hash('sha256', now()->timestamp . $image->getClientOriginalName()) . '.' . $image->extension();
+                        $image->move(public_path('upload/products'), $uniqueName);
+                        $imagePaths[] = '/upload/products/' . $uniqueName;
+                    }
+                }
+
+                $imagePathsJson = json_encode(['image_paths' => $imagePaths]);
+
+                $product = Product::create([
+                    'name' => $request->product_name,
+                    'simple_description' => $request->pSimple_description,
+                    'description' => $request->product_description,
+                    'published' => $request->publish ? 1 : 0,
+                    'template_type' => 'default',
+                    'links' => $imagePathsJson,
+                ]);
+
+                $product->priceLists()->create([
+                    'price' => $request->price,
+                ]);
+
+                if (!empty($variants)) {
+                    foreach ($variants as $variant) {
+                        $product->variants()->create([
+                            'variant_type' => $variant['name'],
+                            'variant_value' => $variant['value'],
+                            'price' => $variant['price'],
+                            'stock' => '1',
+                        ]);
+                    }
+                }
+
+                if (!empty($categories)) {
+                    $product->categories()->attach($categories);
+                }
+
+                DB::commit();
+
+                return response()->json(['message' => 'Product added successfully', 'success' => true]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Failed to add product: ' . $e->getMessage());
+                return response()->json(['error' => 'Failed to add product: ' . $e->getMessage(), 'success' => false], 500);
+            }
+        } else {
+            return Inertia::render('errors/permitiondenied');
+        }
+    }
+
+    public function editProduct() {
+
+    }
 
 }
